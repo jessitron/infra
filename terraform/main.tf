@@ -1,6 +1,12 @@
 
 provider "aws" {
   region = "us-west-2"
+
+   default_tags {
+    tags = {
+      Why        = "QCon London 2023"
+    }
+  }
 }
 
 locals {
