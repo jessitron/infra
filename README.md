@@ -9,6 +9,8 @@ Getting something running in it is another thing
 
 This work is based on the [tutorial](https://developer.hashicorp.com/terraform/tutorials/kubernetes/eks) as of 11 march 2023.
 
+referencing this [repo](https://github.com/hashicorp/learn-terraform-provision-eks-cluster/blob/27e7dda1c011a933b2652a0067160ccd3e6194a7/main.tf)
+
 #### print the version of the aws cli
 
 aws --version
