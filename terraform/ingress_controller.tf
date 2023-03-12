@@ -1,15 +1,16 @@
-// based on: https://andrewtarry.com/posts/terraform-eks-alb-setup/
+module "alb-ingress-controller" {
+  source  = "iplabs/alb-ingress-controller/kubernetes"
+  version = "3.4.0"
+  # insert the 3 required variables here
 
-module "lb_role" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-
-  role_name = "this_here_eks_lb"
-  attach_load_balancer_controller_policy = true
-
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
-    }
+  aws_region_name = var.region
+  k8s_cluster_type = "eks"
+  aws_alb_ingress_controller_version = "2.4.7"
+  k8s_cluster_name = local.cluster_name
+  aws_tags = {
+    wtf = "ingress controller please"
+  }
+  k8s_pod_annotations = {
+    wtf = "ingress controller please"
   }
 }
