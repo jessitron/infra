@@ -6,11 +6,15 @@ terraform {
     }
   }
 
+  backend "local" {
+    path = "../../../../Dropbox/state/infra.tfstate"
+  }
+
   required_version = ">= 1.2.0"
 }
 
 provider "aws" {
-  region  = "us-west-2"
+  region = "us-west-2"
 }
 
 resource "aws_instance" "bananapants-on-ec2" {
