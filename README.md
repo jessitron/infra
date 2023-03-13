@@ -77,6 +77,6 @@ Variables are nice. They let you define a piece of data to use in multiple place
 
 Modules. (subdirectories come into play here, for custom ones)
 These let you abstract a grouping of related resources. For instance, the "eks" module creates a crapton
-of resources in AWS. I wish I could give my instance of the "eks" module a name like I can an individual resource.
+of resources in AWS. "eks" is its given name; what the module does is determined by the 'source' field.
 
 Modules as sharable abstractions - there are registries for these. In the enterprise, you'd have yours. I guess there's a global one for public modules... is it the same as where providers are registered?
