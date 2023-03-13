@@ -30,4 +30,5 @@ module "alb_ingress_controller" {
 
   aws_region_name  = data.aws_region.current.name
   k8s_cluster_name = data.aws_eks_cluster.target.name
+  aws_alb_ingress_controller_version = "2.4.7"
 }
