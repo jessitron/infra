@@ -11,6 +11,15 @@ This work is based on the [tutorial](https://developer.hashicorp.com/terraform/t
 
 referencing this [repo](https://github.com/hashicorp/learn-terraform-provision-eks-cluster/blob/27e7dda1c011a933b2652a0067160ccd3e6194a7/main.tf)
 
+## what have i done
+
+mostly
+
+```
+export KUBE_CONFIG_PATH=$HOME/.kube/config
+terraform apply
+```
+
 #### print the version of the aws cli
 
 aws --version
