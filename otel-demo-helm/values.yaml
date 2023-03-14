@@ -4,12 +4,12 @@ components:
       # Enable the creation of Ingress rules. Default is false
       enabled: true
       # Annotations to add to the ingress rule
-      annotations: {}
+      annotations: { alb.ingress.kubernetes.io/group.name: "otel-demo" }
       # Which Ingress class (controller) to use. Default is unspecified.
       ingressClassName: alb
       # Hosts definitions for the Ingress rule
       hosts:
-        - host: otel-demo.jessitron.com
+        - host: "otel-demo.jessitron.com"
           # Each host can have multiple paths/routes
           paths:
             - path: /
