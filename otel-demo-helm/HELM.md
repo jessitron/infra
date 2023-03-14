@@ -37,7 +37,18 @@ then to iterate:
 
 `helm upgrade --values values.yaml otel-demo open-telemetry/opentelemetry-demo`
 
+## ingress
 
+I couldn't get this to work within the helm chart. And this is not repeatable easily.
+But here's what I did
+
+- install that damn alb ingress controller, over in terraform.
+- make the helm chart make an ingress rule... really, make any ingress rule. It needed to have the secret annotations, about the ip and the internet-facing (see ingress.yaml)
+- run `aws elbv2 describe-load-balancers` to get the deets. That had the hostname in it
+- change the ingress rules to have that hostname.
+
+Really now that I'm defining the ingress rules myself, I could change that hostname to a star, and it
+would probably work. hmm.
 
 ## stuff about helm
 
