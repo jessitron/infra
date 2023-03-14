@@ -1,7 +1,10 @@
 components:
   frontend:
-    env:
-      - name: NEXT_PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-        value: "http://k8s-oteldemo-22aaaf0b73-1367568571.us-west-2.elb.amazonaws.com"
-      - name: NEXT_PUBLIC_OTEL_SERVICE_NAME
+    enabled: true
+    envOverrides:
+      - name: "POOP"
+        value: "crap"
+      - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: "/v1/traces"
+      - name: PUBLIC_OTEL_SERVICE_NAME
         value: "frontend-client"
