@@ -31,6 +31,14 @@ then look for traces at
 
 (this took some retrying, it wasn't reliable, but whatevs, it's all-in-one toy mode)
 
+## iterating
+
+then to iterate:
+
+`helm upgrade --values values.yaml otel-demo open-telemetry/opentelemetry-demo`
+
+
+
 ## stuff about helm
 
 #### version of helm

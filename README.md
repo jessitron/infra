@@ -74,6 +74,8 @@ not be altered by multiple people running terraform at the same time.
 In real life, you can use Terraform Cloud as a backend, or put it in S3, there's all kinds of tricky bits.
 Personally, I'm throwing it in Dropbox so I don't lose it and I can access it from other computers; no one else should touch my infra.
 
+So there's no `terraform destroy` without that state. AND terraform destroy sometimes needs to proceed in stages and it's very weird; to delete some failed ALB controller installs, it took some rollback, delete a few resources individually, then finally delete that part of the config and it destroyed the garbage. Hopefully.
+
 When Terraform creates a resource, it picks up all kinds of data about it, like its IP address and ARN etc etc.
 Other resources can use this data in their creation. Terraform makes a dependency tree out of these.
 
