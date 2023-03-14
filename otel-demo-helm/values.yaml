@@ -15,7 +15,7 @@ components:
       ingressClassName: alb
       # Hosts definitions for the Ingress rule
       hosts:
-        - host: "otel-demo.jessitron.com"
+        - host: "k8s-oteldemo-22aaaf0b73-1367568571.us-west-2.elb.amazonaws.com"
           # Each host can have multiple paths/routes
           paths:
             - path: /
