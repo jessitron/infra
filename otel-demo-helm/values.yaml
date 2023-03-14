@@ -2,9 +2,5 @@ components:
   frontend:
     enabled: true
     envOverrides:
-      - name: "POOP"
-        value: "crap"
       - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
         value: "/v1/traces"
-      - name: PUBLIC_OTEL_SERVICE_NAME
-        value: "frontend-client"
