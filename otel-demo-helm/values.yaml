@@ -4,3 +4,17 @@ components:
     envOverrides:
       - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
         value: "/v1/traces"
+
+opentelemetry-collector:
+  config:
+    exporters:
+      otlp/honeycomb:
+        endpoint: "api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": "api-key-here"
+
+    service:
+      pipelines:
+        traces:
+          processors: [memory_limiter, spanmetrics, batch]
+          exporters: [otlp, logging, otlp/honeycomb]
