@@ -9,6 +9,7 @@ components:
         {
           alb.ingress.kubernetes.io/group.name: "otel-demo",
           alb.ingress.kubernetes.io/target-type: "ip",
+          alb.ingress.kubernetes.io/scheme: "internet-facing",
         }
       # Which Ingress class (controller) to use. Default is unspecified.
       ingressClassName: alb
