@@ -4,6 +4,10 @@ components:
     envOverrides:
       - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
         value: "/v1/traces"
+      - name: NEXT_PUBLIC_PLATFORM
+        value: "aws-platform"
+      - name: PUBLIC_PLATFORM
+        value: "onprem-platform" # not correct, but does this work
 
 opentelemetry-collector:
   config:
@@ -11,7 +15,7 @@ opentelemetry-collector:
       otlp/honeycomb:
         endpoint: "api.honeycomb.io:443"
         headers:
-          "x-honeycomb-team": "api-key-here"
+          "x-honeycomb-team": "FecmbNqfOaYqsELVH54OrD"
 
     service:
       pipelines:
