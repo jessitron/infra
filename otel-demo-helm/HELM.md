@@ -69,3 +69,15 @@ Right. Helm abstracts installation of particular applications on kubernetes.
 How to install an app is defined in a "chart." Charts are published to repositories.
 
 When you install an app in your k8s cluster, that's a "release." It gets a name.
+
+## updating charts
+
+Get the latest version of charts we have used before:
+
+`helm repo update`
+
+I don't know how to list the version of a chart.
+
+`helm search repo opentelemetry-demo`
+
+This lists the current chart version
