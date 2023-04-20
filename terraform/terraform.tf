@@ -4,9 +4,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
-    kubectl = {
-      source ="gavinbunney/kubectl"
-    }
   }
 
   backend "local" {
