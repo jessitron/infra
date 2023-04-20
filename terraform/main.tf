@@ -13,6 +13,18 @@ provider "aws" {
   }
 }
 
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
+provider "kubectl" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
 locals {
   cluster_name = "otel-demo-qcon-london-23"
 }
