@@ -16,7 +16,7 @@ opentelemetry-collector:
     service:
       pipelines:
         traces:
-          processors: [memory_limiter, spanmetrics, batch]
-          exporters: [otlp, logging, otlp/honeycomb]
+          processors: [memory_limiter, batch]
+          exporters: [otlp, logging, otlp/honeycomb, spanmetrics]
       metrics: null
       logs: null

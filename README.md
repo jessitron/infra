@@ -91,3 +91,55 @@ These let you abstract a grouping of related resources. For instance, the "eks" 
 of resources in AWS. "eks" is its given name; what the module does is determined by the 'source' field.
 
 Modules as sharable abstractions - there are registries for these. In the enterprise, you'd have yours. I guess there's a global one for public modules... is it the same as where providers are registered?
+
+## the extension that lets us use ALBs
+
+to apply, we need
+
+export KUBE_CONFIG_PATH=~/.kube/config
+
+## Destroy and recreate
+
+The nodes were out of disk space or something when I tried to upgrade the demo
+installation. Might as well test destroy-and-recreate
+
+From the terraform directory:
+
+`terraform destroy`
+
+There were like 5 resources, some subnets and things, that didn't destroy. whatever.
+
+`terraform apply`
+
+It wasn't that easy. I didn't have KUBE_CONFIG_PATH defined
+so I tried to define it in main.tf
+but then it wanted `terraform init -upgrade`
+which caused it to delete some shit and...
+
+I had to update the version of the aws provider before the init would work.
+
+`terraform apply` um, only wanted to create one resource which is sketch
+but then it wasn't hooked up to k8s
+
+`Error: Kubernetes cluster unreachable:`
+
+which is reasonable. I need to teach my kube config where my cluster is, because something or other isn't figuring that out the way it should
+
+Now I need to figure out the name of the cluster I just created.
+
+`terraform output`
+
+Note to self: next time I do this, change the cluster's name.
+
+```
+$ terraform output
+cluster_name = "otel-demo-qcon-london-23"
+region = "us-west-2"
+$ aws eks update-kubeconfig --name otel-demo-qcon-london-23
+```
+
+And then the name annoys me so
+
+`kubectl config rename-context arn:aws:eks:us-west-2:414852377253:cluster/otel-demo-qcon-london-23 otel-demo`
+
+this time the terraform apply worked
