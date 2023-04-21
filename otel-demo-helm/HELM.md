@@ -81,3 +81,41 @@ I don't know how to list the version of a chart.
 `helm search repo opentelemetry-demo`
 
 This lists the current chart version
+
+# Ingress
+
+This was easier to setup in straight k8s yaml than in helm/terraform.
+I'm gonna need to update the URL somehow though. Where did I get that?
+
+`aws elbv2 describe-load-balancers`
+
+my commit messages are full of info
+
+k8s-oteldemo-22aaaf0b73-1367568571.us-west-2.elb.amazonaws.com
+
+This is the same as before I destroyed and reapplied. I am skeptical.
+
+`helm install otel-demo open-telemetry/opentelemetry-demo`
+
+Now create the ingress by hand:
+
+`k apply -f ingress.yaml`
+
+OK, well, the site is up.
+
+Next I update the deployment of loadgenerator (by hand in k9s) to 0 replicas.
+That helps me test, because I only get the traces I create in the frontend.
+
+I'm getting traces but not from the frontend.
+
+OK. The frontend is trying to send to localhost. The env var...maybe it's changed in the upgraded version? nope, I forgot my values.yaml
+
+`helm upgrade otel-demo open-telemetry/opentelemetry-demo --values values.yaml`
+
+Now I can see my values for the env var when I describe the frontend pod (and push d for details) in k9s
+
+Next problem: 502 bad gateway on /v1/traces. Any other url goes to the proxy and 404s or works.
+
+`k port-forward otel-demo-otelcol-667744848b-8ms9t 4318:4318`
+
+This lets me confirm that the collector is listening on 4318 OK
