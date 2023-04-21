@@ -15,13 +15,13 @@ resource "aws_s3_bucket" "alb_log_bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "alb_log_bucket_policy" {
+resource "aws_s3_bucket_policy" "work_dangit" {
   bucket = aws_s3_bucket.alb_log_bucket.id
-  acl = "public-read"
-#   access_control_policy = {
+  policy = data.aws_iam_policy_document.work_dangit_policy.json
+}
 
-#     /*
-#     {
+data "aws_iam_policy_document" "work_dangit_policy" {
+#   {
 #   "Version": "2012-10-17",
 #   "Statement": [
 #     {
@@ -34,27 +34,19 @@ resource "aws_s3_bucket_acl" "alb_log_bucket_policy" {
 #     }
 #   ]
 # }
-#     */ 
-#     {
-#     grant {
-#       grantee {
-#         id   = data.aws_canonical_user_id.current.id
-#         type = "CanonicalUser"
-#       }
-#       permission = "READ"
-#     }
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["414852377253"]
+    }
 
-#     grant {
-#       grantee {
-#         type = "Group"
-#         uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-#       }
-#       permission = "READ_ACP"
-#     }
+    actions = [
+      "s3:PutObject",
+    ]
 
-#     owner {
-#       id = data.aws_canonical_user_id.current.id
-#     }
-#   }
-#  }
+    resources = [
+      aws_s3_bucket.alb_log_bucket.arn,
+      "${aws_s3_bucket.alb_log_bucket.arn}/prefix/AWSLogs/414852377253/*",
+    ]
+  }
 }
