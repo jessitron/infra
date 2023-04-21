@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "work_dangit_policy" {
 
     resources = [
       aws_s3_bucket.alb_log_bucket.arn,
-      "${aws_s3_bucket.alb_log_bucket.arn}/otel-demo-alb/AWSLogs/${local.account_id}/*",
+      "${aws_s3_bucket.alb_log_bucket.arn}/otel-demo-alb/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
     ]
   }
 }
