@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "alb_log_bucket" {
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+resource "aws_s3_bucket_server_side_encryption_configuration" "dumb_encryption_thing" {
   bucket = aws_s3_bucket.alb_log_bucket.id
 
   rule {
@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "work_dangit_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = [local.account_id]
+      identifiers = ["797873946194"] // secret account where all ALBs run WTF
     } 
 
     actions = [
