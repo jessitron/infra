@@ -31,24 +31,14 @@ resource "aws_s3_bucket_policy" "work_dangit" {
   policy = data.aws_iam_policy_document.work_dangit_policy.json
 }
 
+data "aws_elb_service_account" "main" {}
+
 data "aws_iam_policy_document" "work_dangit_policy" {
-#   {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Effect": "Allow",
-#       "Principal": {
-#         "AWS": "arn:aws:iam::elb-account-id:root"
-#       },
-#       "Action": "s3:PutObject",
-#       "Resource": "arn:aws:s3:::bucket-name/prefix/AWSLogs/your-aws-account-id/*"
-#     }
-#   ]
-# }
+
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["797873946194"] // secret account where all ALBs run WTF
+      identifiers = [data.aws_elb_service_account.main.arn]
     } 
 
     actions = [
@@ -57,7 +47,7 @@ data "aws_iam_policy_document" "work_dangit_policy" {
 
     resources = [
       aws_s3_bucket.alb_log_bucket.arn,
-      "${aws_s3_bucket.alb_log_bucket.arn}/otel-demo-alb/AWSLogs/414852377253/*",
+      "${aws_s3_bucket.alb_log_bucket.arn}/otel-demo-alb/AWSLogs/${local.account_id}/*",
     ]
   }
 }

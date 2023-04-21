@@ -2,13 +2,20 @@ components:
   frontend:
     enabled: true
     envOverrides:
-      - name: NEXT_PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-        value: "/v1/traces"
       - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
         value: "/v1/traces"
 
 opentelemetry-collector:
+  image:
+    tag: "0.75.0"
   config:
+    receivers:
+      otlp:
+        protocols:
+          http:
+            cors:
+              allowed_origins:
+                - http://k8s-oteldemo-22aaaf0b73-1367568571.us-west-2.elb.amazonaws.com
     exporters:
       otlp/honeycomb:
         endpoint: "api.honeycomb.io:443"
