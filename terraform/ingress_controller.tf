@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "work_dangit_policy" {
 
     resources = [
       aws_s3_bucket.alb_log_bucket.arn,
-      "${aws_s3_bucket.alb_log_bucket.arn}/otel-demo-alb/AWSLogs/414852377253/*",
+      "${aws_s3_bucket.alb_log_bucket.arn}/prefix/AWSLogs/414852377253/*",
     ]
   }
 }
