@@ -15,6 +15,17 @@ resource "aws_s3_bucket" "alb_log_bucket" {
   }
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  bucket = aws_s3_bucket.alb_log_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      # kms_master_key_id = aws_kms_key.mykey.arn # there is a default one
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
 resource "aws_s3_bucket_policy" "work_dangit" {
   bucket = aws_s3_bucket.alb_log_bucket.id
   policy = data.aws_iam_policy_document.work_dangit_policy.json
