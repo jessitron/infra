@@ -48,8 +48,8 @@ data "aws_iam_policy_document" "work_dangit_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:elasticloadbalancing:us-west-2:414852377253:loadbalancer/app/k8s-oteldemo-22aaaf0b73/56d52cccc96c22b4"]
-    }
+      identifiers = [local.account_id]
+    } 
 
     actions = [
       "s3:PutObject",
