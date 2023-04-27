@@ -15,7 +15,8 @@ opentelemetry-collector:
           http:
             cors:
               allowed_origins:
-                - http://k8s-oteldemo-22aaaf0b73-1367568571.us-west-2.elb.amazonaws.com
+                - http://k8s-oteldemo-497054d7c2-763859031.us-west-2.elb.amazonaws.com
+            endpoint: ${MY_POD_IP}:4318
     exporters:
       otlp/honeycomb:
         endpoint: "api.honeycomb.io:443"
