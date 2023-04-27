@@ -18,8 +18,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: "k8s-oteldemo-22aaaf0b73-1367568571.us-west-2.elb.amazonaws.com"
-      http:
+    - http:
         paths:
           - path: /v1/traces
             pathType: Prefix
