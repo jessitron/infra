@@ -24,20 +24,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: otel-demo-otelcol
+                name: sso-demo-otelcol
                 port:
                   number: 4318
-          - path: /hello
-            pathType: Prefix
-            backend:
-              service:
-                name: trivial-pod
-                port:
-                  number: 3000
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: otel-demo-frontendproxy
+                name: sso-demo-frontendproxy
                 port:
                   number: 8080
