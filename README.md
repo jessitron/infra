@@ -143,3 +143,14 @@ And then the name annoys me so
 `kubectl config rename-context arn:aws:eks:us-west-2:414852377253:cluster/otel-demo-qcon-london-23 otel-demo`
 
 this time the terraform apply worked
+
+## More things I did
+
+OK. Upgrading the version of the demo was a struggle.
+
+Considerations for destroying: That ingress that I create in k8s, I think I need to
+delete it in k8s, and/or delete its backing ALB manually (did that in the console for one of them).
+
+I destroyed the cluster here... it didn't entirely work. There are subnets and a VPC still milling about. ... with a combination of console work and `terraform destroy` iterations, they seem to be gone :-)
+
+Then I tried Martin's stuff, from the martinjt/demo-eks-alb repo. My checkout of it, locally. Sadly, very sadly, this exists only on my computer and the .tfstate files are only local on this mac :cry:
