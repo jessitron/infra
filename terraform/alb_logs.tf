@@ -8,6 +8,10 @@ resource "aws_s3_bucket" "alb_log_bucket" {
   }
 }
 
+locals {
+  alb_log_prefix = "sstreamo-demo-alb"
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "dumb_encryption_thing" {
   bucket = aws_s3_bucket.alb_log_bucket.id
 
@@ -40,7 +44,7 @@ data "aws_iam_policy_document" "work_dangit_policy" {
 
     resources = [
       aws_s3_bucket.alb_log_bucket.arn,
-      "${aws_s3_bucket.alb_log_bucket.arn}/otel-demo-alb/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
+      "${aws_s3_bucket.alb_log_bucket.arn}/${local.alb_log_prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
     ]
   }
 }
