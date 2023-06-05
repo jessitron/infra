@@ -72,6 +72,10 @@ When you install an app in your k8s cluster, that's a "release." It gets a name.
 
 ## updating charts
 
+What version are we on currently?
+
+`helm list` shows the name of the installation (currently 'sso-demo') and the chart version.
+
 Get the latest version of charts we have used before:
 
 `helm repo update`
@@ -81,6 +85,14 @@ I don't know how to list the version of a chart.
 `helm search repo opentelemetry-demo`
 
 This lists the current chart version
+
+Check for upgrade instructions:
+
+https://github.com/open-telemetry/opentelemetry-helm-charts/blob/main/charts/opentelemetry-demo/UPGRADING.md
+
+To upgrade to the latest, if there aren't any changes:
+
+`helm upgrade sso-demo open-telemetry/opentelemetry-demo -f values.yaml`
 
 # Ingress
 
