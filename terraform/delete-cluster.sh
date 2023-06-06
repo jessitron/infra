@@ -12,14 +12,13 @@ root_span=$(otel-cli span --tp-print --name "this_program"  | grep TRACEPARENT)
 echo $root_span
 export $root_span #this will put future commands in here
 
-
 function in_span {
   local command=$*
   echo "Let's run a span around: <$command>"
-  otel-cli --service "script" --name "spanny boi" --attrs "message=hello" exec $command
+  otel-cli --service "script" --name "spanny boi" --attrs "message=hello" exec "$command"
 }
 
 #
 # Main
 #
-in_span delete_cluster
+in_span aws eks delete-cluster --name demo
