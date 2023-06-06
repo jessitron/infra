@@ -1,19 +1,22 @@
-if [[-z $HONEYCOMB_API_KEY ]]
+if [[ -z $HONEYCOMB_API_KEY ]]
 then
   echo "please define HONEYCOMB_API_KEY"
   exit 1
 fi
+
+export OTEL_EXPORTER_OTLP_HEADERS="X-Honeycomb-Team=$HONEYCOMB_API_KEY"
+export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io"
+
+root_span=$(otel-cli --name "$0" span --tp-print | grep TRACEPARENT)
+echo $root_span
+
 
 function jsonify {
   jq -n --arg key $1 --arg value $2 '.[$key]=$value'
 }
 
 function send_to_hny {
-  local endpoint=https://api.honeycomb.io/1/events/script
-  local header="X-Honeycomb-Team: $HONEYCOMB_API_KEY"
-  local data=$(jsonify message "Hello")
-  echo "Send this: <$data> with header $header"
-  curl -H "$header" -X POST -d "$data" $endpoint
+  otel-cli --service "script" --name "spanny boi" --attrs "message=hello" exec echo hi
 }
 
 function in_span {
