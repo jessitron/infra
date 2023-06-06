@@ -7,22 +7,16 @@ fi
 export OTEL_EXPORTER_OTLP_HEADERS="X-Honeycomb-Team=$HONEYCOMB_API_KEY"
 export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io"
 
-root_span=$(otel-cli --name "$0" span --tp-print | grep TRACEPARENT)
+this_program="$*"
+root_span=$(otel-cli span --tp-print --name "this_program"  | grep TRACEPARENT)
 echo $root_span
+export $root_span #this will put future commands in here
 
-
-function jsonify {
-  jq -n --arg key $1 --arg value $2 '.[$key]=$value'
-}
-
-function send_to_hny {
-  otel-cli --service "script" --name "spanny boi" --attrs "message=hello" exec echo hi
-}
 
 function in_span {
   local command=$*
   echo "Let's run a span around: <$command>"
-  send_to_hny
+  otel-cli --service "script" --name "spanny boi" --attrs "message=hello" exec $command
 }
 
 #
