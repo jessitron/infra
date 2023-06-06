@@ -154,3 +154,27 @@ delete it in k8s, and/or delete its backing ALB manually (did that in the consol
 I destroyed the cluster here... it didn't entirely work. There are subnets and a VPC still milling about. ... with a combination of console work and `terraform destroy` iterations, they seem to be gone :-)
 
 Then I tried Martin's stuff, from the martinjt/demo-eks-alb repo. My checkout of it, locally. Sadly, very sadly, this exists only on my computer and the .tfstate files are only local on this mac :cry:
+
+## Putting the state in s3
+
+Create a bucket:
+
+`aws s3 mb s3://jessitron-infra --region $(aws configure get region)`
+
+Then somewhere, replacing another backend block:
+
+```
+terraform {
+    backend "s3" {
+    bucket = "jessitron-infra"
+    key = "infra/terraform/terraform.tfstate"
+    region = "us-west-2"
+  }
+}
+```
+
+and finally,
+
+`terraform init -migrate-state`
+
+to copy what feeble state I still have.
