@@ -144,6 +144,16 @@ And then the name annoys me so
 
 this time the terraform apply worked
 
+## Destroy without terraform state
+
+I lost the terraform state and worked a lot at destroying things manually.
+
+It turns out there's a decent way to remove a cluster
+
+TL;DR is use `eksctl`, longer instructions [here](https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html)
+
+Then the other trick is to find the "tag editor" in the AWS Console, and search for resources in the region.
+
 ## More things I did
 
 OK. Upgrading the version of the demo was a struggle.

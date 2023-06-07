@@ -4,6 +4,8 @@ then
   exit 1
 fi
 
+echo "Jess, just use eksctl. See the readme"
+
 set -e
 
 export OTEL_EXPORTER_OTLP_HEADERS="X-Honeycomb-Team=$HONEYCOMB_API_KEY"
@@ -144,3 +146,4 @@ echo "VPC deletion completed."
 # 2 NAT Gateways in Deleted state, whyyy
 # two s3 buckets, which I want to keep
 # and a set of things that looks to me like the default VPC. I'll leave those be.
+
