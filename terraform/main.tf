@@ -38,7 +38,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.19.0"
 
-  name = "demo"
+  name = "pixie-lou"
   cidr = "10.0.0.0/16"
 
   azs             = ["${local.region}a", "${local.region}b"]
