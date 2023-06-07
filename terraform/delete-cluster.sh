@@ -136,3 +136,11 @@ in_span aws ec2 delete-vpc --vpc-id $VPC_ID
 
 echo "VPC deletion completed."
 
+# Things still hanging around, that I deleted in the console:
+# 5 target groups, deleted
+# 1 key, leaving it be
+# 1 AutoScalingManagedRule, can't be arsed
+# 2 Elastic IP addresses, released
+# 2 NAT Gateways in Deleted state, whyyy
+# two s3 buckets, which I want to keep
+# and a set of things that looks to me like the default VPC. I'll leave those be.
