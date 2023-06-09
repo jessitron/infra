@@ -44,6 +44,12 @@ terraform --version
 
 kubectl config get-contexts
 
+#### connect the created cluster to my local k9s
+
+`aws eks update-kubeconfig --region us-west-2 --name pixie-lou`
+
+`k get pods`
+
 ## TODO
 
 get someone else access to k8s in this cluster. I remember that is tricky.
