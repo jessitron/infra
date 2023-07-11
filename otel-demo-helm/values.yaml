@@ -8,6 +8,9 @@ components:
 opentelemetry-collector:
   image:
     tag: "0.75.0"
+  presets:
+    kubernetesAttributes:
+      enabled: true
   config:
     receivers:
       otlp:

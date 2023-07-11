@@ -37,6 +37,12 @@ then to iterate:
 
 `helm upgrade --values values.yaml otel-demo open-telemetry/opentelemetry-demo`
 
+## What is it going to do
+
+`helm upgrade --dry-run --values values.yaml otel-demo open-telemetry/opentelemetry-demo > all-the.yaml`
+
+To see the collector config it has constructed, look for `kind: ConfigMap` and then hit next until you find the one for otelcol
+
 ## ingress
 
 I couldn't get this to work within the helm chart. And this is not repeatable easily.
