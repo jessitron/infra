@@ -11,6 +11,10 @@ opentelemetry-collector:
   presets:
     kubernetesAttributes:
       enabled: true
+    clusterMetrics:
+      enabled: true
+    kubernetesEvents:
+      enabled: true
   config:
     receivers:
       otlp:
