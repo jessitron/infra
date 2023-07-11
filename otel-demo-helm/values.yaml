@@ -31,3 +31,5 @@ opentelemetry-collector:
         traces:
           processors: [memory_limiter, batch]
           exporters: [otlp, logging, otlp/honeycomb, spanmetrics]
+        metrics:
+          exporters: [otlp/honeycomb]
