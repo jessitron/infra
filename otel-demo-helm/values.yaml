@@ -38,3 +38,5 @@ opentelemetry-collector:
           exporters: [otlp, logging, otlp/honeycomb, spanmetrics]
         metrics:
           exporters: [otlp/honeycomb]
+        logs:
+          exporters: [otlp/honeycomb]
