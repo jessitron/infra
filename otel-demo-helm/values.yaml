@@ -24,6 +24,7 @@ opentelemetry-collector:
       otlp/honeycomb:
         endpoint: "api.honeycomb.io:443"
         headers:
+          "x-honeycomb-dataset": all-the-metrics
           "x-honeycomb-team": "FecmbNqfOaYqsELVH54OrD"
 
     service:
