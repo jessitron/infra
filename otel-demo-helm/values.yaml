@@ -30,7 +30,7 @@ opentelemetry-collector:
         headers:
           "x-honeycomb-dataset": all-the-metrics
           "x-honeycomb-team": "FecmbNqfOaYqsELVH54OrD"
-        otlp/honeycomb-logs:
+      otlp/honeycomb-logs:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-dataset": all-the-logs
