@@ -2,3 +2,4 @@
 *.tfstate
 *.log
 *.txt
+.DS_Store
