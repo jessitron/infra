@@ -22,7 +22,7 @@ terraform {
 provider "aws" {
   default_tags {
     tags = {
-      Why = "Something Something Observability"
+      Why = "Demonstrate OpenTelemetry Operator"
     }
   }
 }
@@ -38,7 +38,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.19.0"
 
-  name = "pixie-lou-vpc"
+  name = "operatinate-vpc"
   cidr = "10.0.0.0/16"
 
   azs             = ["${local.region}a", "${local.region}b"]
@@ -65,7 +65,7 @@ module "cluster" {
     module.vpc,
   ]
 
-  cluster_name       = "pixie-lou"
+  cluster_name       = "odin-boi"
   vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnets
   public_subnet_ids  = module.vpc.public_subnets
