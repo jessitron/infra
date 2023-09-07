@@ -13,3 +13,8 @@ install with the helm chart which will create a secret for you:
 ```
 helm install my-opentelemetry-collector open-telemetry/opentelemetry-collector --values daemonset-collector-config.yaml --set extraEnvs[0].value=$HONEYCOMB_API_KEY --set extraEnvs[0].name=HONEYCOMB_API_KEY --dry-run
 ```
+
+Turn on its saying stuff: 
+https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/troubleshooting.md#logs
+
+

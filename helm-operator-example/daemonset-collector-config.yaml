@@ -28,6 +28,9 @@ config:
         x-honeycomb-dataset: service-logs
 
   service:
+    telemetry:
+      logs:
+        level: "debug"
     pipelines:
       traces:
         exporters: [otlp]
