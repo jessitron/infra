@@ -4,7 +4,7 @@ resources:
     cpu: 1
     memory: 1Gi
 image:
-  tag: "0.81.0"
+  tag: "0.84.0"
 presets:
   kubernetesAttributes:
     enabled: true
@@ -40,7 +40,7 @@ config:
     pipelines:
       traces:
         exporters: [otlp]
-      metrics: 
+      metrics:
         exporters: [otlp/metrics]
-      logs: 
+      logs:
         exporters: [otlp/logging]
