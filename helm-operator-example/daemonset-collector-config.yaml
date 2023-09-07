@@ -9,15 +9,6 @@ presets:
   kubernetesAttributes:
     enabled: true
 config:
-  receivers:
-    otlp:
-      protocols:
-        http:
-          cors:
-            allowed_origins:
-              - http://*
-              - https://*
-
   exporters:
     otlp:
       endpoint: api.honeycomb.io:443
