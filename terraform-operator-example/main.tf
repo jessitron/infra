@@ -85,14 +85,9 @@ provider "helm" {
   }
 }
 
-resource "helm_repository" "jetstack" {
-  name = "jetstack"
-  url  = "https://charts.jetstack.io"
-}
-
 resource "helm_release" "cert-manager" {
   name             = "cert-manager"
-  repository       = helm_repository.jetstack.metadata[0].name
+  repository       = "https://charts.jetstack.io"
   chart            = "jetstack/cert-manager"
   version          = "1.12.4"
   namespace        = "cert-manager"
