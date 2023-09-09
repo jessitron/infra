@@ -32,3 +32,22 @@ Now I need to update the API key, might as well do it right. For this I'm workin
 I did this:
 
 `kubectl create secret generic honeycomb-api-key --from-literal=api-key=<api key for modernity/petclinic>`
+
+## install the operator
+
+the [docs](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-end-to-end-encryption-for-applications-on-amazon-eks-using-cert-manager-and-let-s-encrypt.html) say I need a cert manager.
+
+AWS [recommends](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-end-to-end-encryption-for-applications-on-amazon-eks-using-cert-manager-and-let-s-encrypt.html) [cert-manager.io]()
+
+So I followed its [instructions](https://cert-manager.io/docs/installation/#default-static-install) and did this:
+
+`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.4/cert-manager.yaml`
+
+I don't know how to see that in k9s.
+
+Next, the operator docs say to do this:
+
+`kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml`
+
+well this is scary and opaque.
+
