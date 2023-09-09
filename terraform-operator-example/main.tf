@@ -87,7 +87,7 @@ provider "helm" {
 
 resource "helm_release" "cert-manager" {
   name             = "cert-manager"
-  repository       = "https://charts.jetstack.io/jetstack"
+  repository       = "https://charts.jetstack.io/"
   chart            = "cert-manager"
   version          = "1.12.4"
   namespace        = "cert-manager"
@@ -95,5 +95,18 @@ resource "helm_release" "cert-manager" {
 
   values = [
     file("${path.module}/cert-manager-values.yaml")
+  ]
+}
+
+resource "helm_release" "otel-operator" {
+  name             = "otel-operator"
+  repository       = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+  chart            = "opentelemetry-operator"
+  version          = "0.37.0"
+  namespace        = "opentelemetry-operator-system"
+  create_namespace = true
+
+  values = [
+    file("${path.module}/otel-operator-values.yaml")
   ]
 }
