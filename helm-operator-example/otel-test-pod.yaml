@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    run: busybox
-  name: busybox
+    why: test-the-opentelemetry-collector
+  name: otel-test-pod
 spec:
   containers:
     - args:
         - sleep
         - "3600"
-      image: busybox
-      name: busybox
+      image: jessitron/otel-test-pod
+      name: otel-test-pod
       resources: {}
       env:
         - name: NODE_IP
