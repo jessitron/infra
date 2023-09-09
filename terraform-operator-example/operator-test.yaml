@@ -1,0 +1,32 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: simplest
+spec:
+  env:
+    - name: HONEYCOMB_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: honeycomb-api-key
+          key: api-key
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+    processors:
+
+    exporters:
+      logging:
+      otlp:
+        endpoint: api.honeycomb.io:443
+        headers:
+          x-honeycomb-team: ${HONEYCOMB_API_KEY}
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [logging, otlp]
