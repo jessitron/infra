@@ -16,3 +16,9 @@ helm install my-opentelemetry-collector open-telemetry/opentelemetry-collector -
 
 Turn on its saying stuff:
 https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/troubleshooting.md#logs
+
+#### Testing the collector
+
+I can start up a pod by applying otel-test-pod.yaml. Full instructions in [this blog post](https://jessitron.com/2023/09/08/testing-an-opentelemetry-collector-deployed-as-a-daemonset-in-kubernetes/).
+
+Useful place to find out where this API key is gonna send stuff in hny: [honeycomb-whoami.glitch.me](https://honeycomb-whoami.glitch.me/)
