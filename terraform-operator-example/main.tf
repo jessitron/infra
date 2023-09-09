@@ -87,8 +87,8 @@ provider "helm" {
 
 resource "helm_release" "cert-manager" {
   name             = "cert-manager"
-  repository       = "https://charts.jetstack.io"
-  chart            = "jetstack/cert-manager"
+  repository       = "https://charts.jetstack.io/jetstack"
+  chart            = "cert-manager"
   version          = "1.12.4"
   namespace        = "cert-manager"
   create_namespace = true
