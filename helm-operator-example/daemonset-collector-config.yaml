@@ -8,6 +8,12 @@ image:
 presets:
   kubernetesAttributes:
     enabled: true
+extraEnvs:
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: honeycomb-api-key
+        key: api-key
 config:
   exporters:
     otlp:
