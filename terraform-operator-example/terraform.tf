@@ -9,6 +9,9 @@ terraform {
     name       = "cert-manager"
     repository = "jetstack https://charts.jetstack.io"
     chart      = "jetstack/cert-manager"
+    version    = "1.12.4"
+    namespace  = "cert-manager"
+    create-namespace = true
 
     values = [
       file("${path.module}/cert-manager-values.yaml")
