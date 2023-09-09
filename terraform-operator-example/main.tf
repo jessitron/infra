@@ -91,7 +91,7 @@ resource "helm_release" "cert-manager" {
   chart            = "jetstack/cert-manager"
   version          = "1.12.4"
   namespace        = "cert-manager"
-  create-namespace = true
+  create_namespace = true
 
   values = [
     file("${path.module}/cert-manager-values.yaml")
