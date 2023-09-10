@@ -14,7 +14,36 @@ extraEnvs:
       secretKeyRef:
         name: honeycomb-api-key
         key: api-key
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+  metrics:
+    enabled: false
 config:
+  processors:
+    transform/labelme:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "service-opentelemetry-collector")
+      trace_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "service-opentelemetry-collector")
+      log_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "service-opentelemetry-collector")
+  receivers:
+    jaeger: null
+    zipkin: null
+    prometheus: null
   exporters:
     otlp:
       endpoint: api.honeycomb.io:443
@@ -39,8 +68,14 @@ config:
         level: "debug"
     pipelines:
       traces:
+        receivers: [otlp]
+        processors: [k8sattributes, transform/labelme, memory_limiter, batch]
         exporters: [otlp]
       metrics:
+        receivers: [otlp]
+        processors: [k8sattributes, transform/labelme, memory_limiter, batch]
         exporters: [otlp/metrics]
       logs:
+        receivers: [otlp]
+        processors: [k8sattributes, transform/labelme, memory_limiter, batch]
         exporters: [otlp/logging]
