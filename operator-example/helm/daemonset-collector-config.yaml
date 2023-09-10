@@ -39,12 +39,14 @@ config:
       metric_statements:
         - context: resource
           statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.receiver"], "kubeletstats")
             - set(attributes["collector.collector"], "daemonset-opentelemetry-collector")
     transform/other:
       metric_statements:
         - context: resource
           statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.collector"], "daemonset-opentelemetry-collector")
       trace_statements:
         - context: resource
