@@ -1,0 +1,78 @@
+mode: deployment
+replicaCount: 1
+image:
+  tag: "0.84.0"
+presets:
+  clusterMetrics:
+    enabled: true
+  kubernetesEvents:
+    enabled: true
+extraEnvs:
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: honeycomb-api-key
+        key: api-key
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+  metrics:
+    enabled: false
+config:
+  processors:
+    transform/labelme:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+            - set(attributes["collector.collector"], "cluster-opentelemetry-collector")
+      trace_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "cluster-opentelemetry-collector")
+      log_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "cluster-opentelemetry-collector")
+  receivers:
+    jaeger: null
+    zipkin: null
+    prometheus: null
+  exporters:
+    otlp:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+
+    otlp/metrics:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+        x-honeycomb-dataset: service-metrics
+
+    otlp/logging:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+        x-honeycomb-dataset: cluster-logs
+
+  service:
+    telemetry:
+      logs:
+        level: "debug"
+    pipelines:
+      traces:
+        processors: [transform/labelme, memory_limiter, batch]
+        exporters: [otlp]
+      metrics:
+        processors: [transform/labelme, memory_limiter, batch]
+        exporters: [otlp/metrics]
+      logs:
+        processors: [transform/labelme, memory_limiter, batch]
+        exporters: [otlp/logging]

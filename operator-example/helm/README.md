@@ -61,4 +61,12 @@ It wants to set the exporter URL the same for everyone.
 
 So let's run the collector as a deployment, with a service in front of it.
 
-`helm install service-opentelemetry-collector open-telemetry/opentelemetry-collector --values service-collector-config.yaml`
+```
+helm upgrade service-opentelemetry-collector open-telemetry/opentelemetry-collector --values service-collector-config.yaml
+```
+
+# Separately, let's have exactly one that grabs cluster events
+
+```
+helm upgrade cluster-opentelemetry-collector open-telemetry/opentelemetry-collector --values cluster-collector-config.yaml
+```
