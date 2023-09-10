@@ -31,6 +31,7 @@ config:
       metric_statements:
         - context: resource
           statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.collector"], "service-opentelemetry-collector")
       trace_statements:
         - context: resource
