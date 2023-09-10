@@ -11,7 +11,7 @@ Update the chart: `helm repo update open-telemetry`
 install with the helm chart:
 
 ```
-helm install my-opentelemetry-collector open-telemetry/opentelemetry-collector --values daemonset-collector-config.yaml --set extraEnvs[0].value=$HONEYCOMB_API_KEY --set extraEnvs[0].name=HONEYCOMB_API_KEY --dry-run
+helm install daemonset-opentelemetry-collector open-telemetry/opentelemetry-collector --values daemonset-collector-config.yaml --dry-run
 ```
 
 Turn on its saying stuff:

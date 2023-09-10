@@ -8,13 +8,32 @@ image:
 presets:
   kubernetesAttributes:
     enabled: true
+  kubeletMetrics:
+    enabled: true
+  logsCollection:
+    enabled: true
 extraEnvs:
   - name: HONEYCOMB_API_KEY
     valueFrom:
       secretKeyRef:
         name: honeycomb-api-key
         key: api-key
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+  metrics:
+    enabled: false
 config:
+  receivers:
+    jaeger: null
+    prometheus: null
+    zipkin: null
   exporters:
     otlp:
       endpoint: api.honeycomb.io:443
