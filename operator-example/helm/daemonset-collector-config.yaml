@@ -34,6 +34,26 @@ ports:
   metrics:
     enabled: false
 config:
+  processors:
+    transform/kubeletstats:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.receiver"], "kubeletstats")
+            - set(attributes["collector.collector"], "daemonset-opentelemetry-collector")
+    transform/other:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "daemonset-opentelemetry-collector")
+      trace_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "daemonset-opentelemetry-collector")
+      log_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "daemonset-opentelemetry-collector")
   receivers:
     jaeger: null
     zipkin: null
@@ -65,10 +85,17 @@ config:
     pipelines:
       traces:
         receivers: [otlp]
+        processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp]
       metrics:
-        receivers: [prometheus, otlp, kubeletstats]
+        receivers: [prometheus, otlp]
+        processors: [k8sattributes, transform/other, memory_limiter, batch]
+        exporters: [otlp/metrics]
+      metrics/kubeletstats:
+        receivers: [kubeletstats]
+        processors: [k8sattributes, transform/kubeletstats, memory_limiter, batch]
         exporters: [otlp/metrics]
       logs:
         receivers: [otlp, filelog]
+        processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp/logging]
