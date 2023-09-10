@@ -4,7 +4,7 @@ metadata:
   name: demo-instrumentation
 spec:
   exporter:
-    endpoint: http://$NODE_IP:4317
+    endpoint: http://service-opentelemetry-collector:4317
   propagators:
     - tracecontext
     - baggage
