@@ -110,3 +110,22 @@ resource "helm_release" "otel-operator" {
     file("${path.module}/otel-operator-values.yaml")
   ]
 }
+
+resource "helm_release" "petclinic-postgres" {
+  name       = "petclinic-postgres"
+  repository = "https://cetic.github.io/helm-charts"
+  chart      = "postgresql"
+
+  set {
+    name  = "postgresql.username"
+    value = "petclinic"
+  }
+  set {
+    name  = "postgresql.password"
+    value = "petclinic"
+  }
+  set {
+    name  = "postgresql.database"
+    value = "petclinic"
+  }
+}
