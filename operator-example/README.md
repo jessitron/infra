@@ -8,13 +8,19 @@ which contains yaml for deploying the application (in k8s/) and scripts for buil
 [x] make a collector run
 [x] make the operator run
 [x] see traces
-  [ ] see them in Jaeger
+  [x] see them in Jaeger
 [x] run a collector for events
 [x] run a collector for metrics
 [ ] see them in grafana
 [ ] make some sort of dashboard
 
 Improve the traces:
-[ ] make the petclinic use a real database
+[x] make the petclinic use a real database
+[ ] make the database persistent
 [ ] give petclinic a better service name than petclinic-deployment
 [ ] i can put the collector back as a daemonset now, Austin figured out how to do it
+[ ] a real URL
+
+Blog posts I could make out of this:
+- how to include a helm deployment in terraform. A negative of this: terraform can't tell you what it's gonna create.
+- labeling your telemetry in the collector, with where it came from
