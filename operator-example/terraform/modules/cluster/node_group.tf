@@ -4,12 +4,12 @@ resource "aws_eks_node_group" "main" {
   ]
 
   cluster_name    = aws_eks_cluster.main.name
-  instance_types  = ["t3.medium"]
+  instance_types  = ["t3.xlarge"]
   node_group_name = "main"
   node_role_arn   = aws_iam_role.node.arn
 
   scaling_config {
-    desired_size = 3
+    desired_size = 2
     max_size     = 3
     min_size     = 1
   }
