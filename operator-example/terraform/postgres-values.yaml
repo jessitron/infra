@@ -1,0 +1,12 @@
+image:
+  repository: postgres
+  tag: "15.3"
+  pullPolicy: IfNotPresent
+
+postgresql:
+  username: petclinic
+  password: petclinic
+  database: petclinic
+
+persistence:
+  enabled: false

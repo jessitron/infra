@@ -116,16 +116,7 @@ resource "helm_release" "petclinic-postgres" {
   repository = "https://cetic.github.io/helm-charts"
   chart      = "postgresql"
 
-  set {
-    name  = "postgresql.username"
-    value = "petclinic"
-  }
-  set {
-    name  = "postgresql.password"
-    value = "petclinic"
-  }
-  set {
-    name  = "postgresql.database"
-    value = "petclinic"
-  }
+  values = [
+    file("${path.module}/postgres-values.yaml")
+  ]
 }
