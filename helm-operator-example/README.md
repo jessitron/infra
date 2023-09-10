@@ -51,3 +51,10 @@ Next, the operator docs say to do this:
 
 well this is scary and opaque.
 
+## The operator doesn't work with a daemonset
+
+It wants to set the exporter URL the same for everyone.
+
+So let's run the collector as a deployment, with a service in front of it.
+
+`helm install service-opentelemetry-collector open-telemetry/opentelemetry-collector --values service-collector-config.yaml`
