@@ -57,8 +57,11 @@ config:
         level: "debug"
     pipelines:
       traces:
+        receivers: [otlp]
         exporters: [otlp]
       metrics:
+        receivers: [prometheus, otlp, kubeletstats]
         exporters: [otlp/metrics]
       logs:
+        receivers: [otlp, filelog]
         exporters: [otlp/logging]
