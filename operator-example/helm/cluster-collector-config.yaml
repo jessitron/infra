@@ -30,6 +30,7 @@ config:
       metric_statements:
         - context: resource
           statements:
+            - set(attributes["collector.receiver"], "k8s_cluster")
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.collector"], "cluster-opentelemetry-collector")
       trace_statements:
@@ -39,6 +40,7 @@ config:
       log_statements:
         - context: resource
           statements:
+            - set(attributes["collector.receiver"], "k8sobjects")
             - set(attributes["collector.collector"], "cluster-opentelemetry-collector")
   receivers:
     jaeger: null
@@ -60,19 +62,19 @@ config:
       endpoint: api.honeycomb.io:443
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
-        x-honeycomb-dataset: cluster-logs
+        x-honeycomb-dataset: service-logs
 
   service:
     telemetry:
       logs:
         level: "debug"
     pipelines:
-      traces:
-        processors: [transform/labelme, memory_limiter, batch]
-        exporters: [otlp]
+      traces: null
       metrics:
+        receivers: [k8s_cluster]
         processors: [transform/labelme, memory_limiter, batch]
         exporters: [otlp/metrics]
       logs:
+        receivers: [k8sobjects]
         processors: [transform/labelme, memory_limiter, batch]
         exporters: [otlp/logging]
