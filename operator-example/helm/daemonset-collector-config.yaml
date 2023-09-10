@@ -32,7 +32,6 @@ ports:
 config:
   receivers:
     jaeger: null
-    prometheus: null
     zipkin: null
   exporters:
     otlp:
