@@ -9,10 +9,12 @@ which contains yaml for deploying the application (in k8s/) and scripts for buil
 [x] make the operator run
 [x] see traces
   [ ] see them in Jaeger
-[ ] run a collector for events
-[ ] run a collector for metrics
-  [ ] see them in grafana
+[x] run a collector for events
+[x] run a collector for metrics
+[ ] see them in grafana
+[ ] make some sort of dashboard
 
 Improve the traces:
 [ ] make the petclinic use a real database
 [ ] give petclinic a better service name than petclinic-deployment
+[ ] i can put the collector back as a daemonset now, Austin figured out how to do it
