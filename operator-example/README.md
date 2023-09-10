@@ -15,3 +15,4 @@ which contains yaml for deploying the application (in k8s/) and scripts for buil
 
 Improve the traces:
 [ ] make the petclinic use a real database
+[ ] give petclinic a better service name than petclinic-deployment
