@@ -18,6 +18,10 @@ extraEnvs:
       secretKeyRef:
         name: honeycomb-api-key
         key: api-key
+  - name: NODE_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
 ports:
   jaeger-compact:
     enabled: false
@@ -33,6 +37,9 @@ config:
   receivers:
     jaeger: null
     zipkin: null
+    kubeletstats:
+      endpoint: "https://${NODE_IP}:10250"
+      insecure_skip_verify: true
   exporters:
     otlp:
       endpoint: api.honeycomb.io:443

@@ -5,6 +5,7 @@ metadata:
     why: test-the-opentelemetry-collector
   name: otel-test-pod
 spec:
+  serviceAccountName: daemonset-opentelemetry-collector
   containers:
     - args:
         - sleep
@@ -17,5 +18,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
   dnsPolicy: ClusterFirst
   restartPolicy: Never

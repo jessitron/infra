@@ -14,6 +14,10 @@ install with the helm chart:
 helm install daemonset-opentelemetry-collector open-telemetry/opentelemetry-collector --values daemonset-collector-config.yaml --dry-run
 ```
 
+```
+helm upgrade daemonset-opentelemetry-collector open-telemetry/opentelemetry-collector --values daemonset-collector-config.yaml
+```
+
 Turn on its saying stuff:
 https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/troubleshooting.md#logs
 
