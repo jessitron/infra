@@ -12,6 +12,7 @@ which contains yaml for deploying the application (in k8s/) and scripts for buil
 [x] run a collector for events
 [x] run a collector for metrics
 [ ] see them in grafana
+   [ ] make my otel-demo frontend collector have a metrics pipeline, and expose /v1/metrics
 [ ] make some sort of dashboard
 
 Improve the traces:
@@ -20,6 +21,8 @@ Improve the traces:
 [ ] give petclinic a better service name than petclinic-deployment
 [ ] i can put the collector back as a daemonset now, Austin figured out how to do it
 [ ] a real URL
+[ ] derived columns in hny so I can make something of the events
+[ ] get more resource events from the k8sobjects receiver
 
 Blog posts I could make out of this:
 - how to include a helm deployment in terraform. A negative of this: terraform can't tell you what it's gonna create.
