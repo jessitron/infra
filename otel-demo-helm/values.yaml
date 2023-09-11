@@ -5,6 +5,19 @@ components:
       - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
         value: "/v1/traces"
 
+prometheus:
+  server:
+    global:
+      scrape_interval: 10s
+      scrape_timeout: 3s
+      evaluation_interval: 30s
+    persistentVolume:
+      enabled: false
+    resources:
+      limits:
+        memory: 600Mi
+
+
 opentelemetry-collector:
   extraEnvs:
     - name: HONEYCOMB_API_KEY
