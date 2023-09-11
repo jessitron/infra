@@ -137,3 +137,13 @@ Next problem: 502 bad gateway on /v1/traces. Any other url goes to the proxy and
 `k port-forward otel-demo-otelcol-667744848b-8ms9t 4318:4318`
 
 This lets me confirm that the collector is listening on 4318 OK
+
+### a secret
+
+I put the API key in a secret.
+
+```
+kubectl create secret generic honeycomb-api-key --from-literal=api-key=$HONEYCOMB_API_KEY
+```
+
+and then added it as an env var to
