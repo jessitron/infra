@@ -1,3 +1,5 @@
+# Helm release: otel-demo
+# Helm chart: open-telemetry/opentelemetry-demo
 components:
   frontend:
     enabled: true

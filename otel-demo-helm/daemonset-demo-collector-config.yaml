@@ -43,21 +43,21 @@ config:
           statements:
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.receiver"], "kubeletstats")
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"]
     transform/other:
       metric_statements:
         - context: resource
           statements:
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"]
       trace_statements:
         - context: resource
           statements:
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"] == nil
       log_statements:
         - context: resource
           statements:
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"]
   receivers:
     jaeger: null
     zipkin: null
