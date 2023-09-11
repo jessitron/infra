@@ -1,0 +1,30 @@
+#!/bin/bash
+
+filename=$1
+if [[ -z $1 ]]; then
+  echo "Usage: $0 <values.yaml>"
+  exit 1
+fi
+
+set -e
+
+
+release_name=$(grep '^# Helm release:' $filename  | cut -d ':' -f 2)
+if [[ -z $release_name ]]; then
+  echo "I need to know the helm release. Please add a line starting with '# Helm release:'"
+  exit 1
+fi
+
+echo "Release name: " $release_name
+
+chart_name=$(grep '^# Helm chart:' $filename  | cut -d ':' -f 2)
+if [[ -z $chart_name ]]; then
+  echo "I need to know the helm chart. Please add a line starting with '# Helm chart:'"
+  exit 1
+fi
+
+echo "Helm chart: " $chart_name
+
+set -x
+
+helm upgrade --values $filename $release_name $chart_name

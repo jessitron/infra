@@ -1,3 +1,5 @@
+# Helm release: daemonset-opentelemetry-collector
+# Helm chart: open-telemetry/opentelemetry-collector
 mode: daemonset
 resources:
   limits:

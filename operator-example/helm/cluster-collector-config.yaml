@@ -1,3 +1,5 @@
+# Helm release: cluster-opentelemetry-collector
+# Helm chart: open-telemetry/opentelemetry-collector
 mode: deployment
 replicaCount: 1
 image:

@@ -1,3 +1,5 @@
+# Helm release: service-opentelemetry-collector
+# Helm chart: open-telemetry/opentelemetry-collector
 mode: deployment
 resources:
   limits:
