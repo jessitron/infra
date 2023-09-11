@@ -20,6 +20,13 @@ spec:
   rules:
     - http:
         paths:
+          - path: /v1/metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: otel-demo-otelcol
+                port:
+                  number: 4318
           - path: /v1/traces
             pathType: Prefix
             backend:

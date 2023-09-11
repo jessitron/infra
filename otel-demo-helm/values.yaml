@@ -6,6 +6,12 @@ components:
         value: "/v1/traces"
 
 opentelemetry-collector:
+  extraEnvs:
+    - name: HONEYCOMB_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: honeycomb-api-key
+          key: api-key
   image:
     tag: "0.75.0"
   presets:
@@ -22,26 +28,25 @@ opentelemetry-collector:
           http:
             cors:
               allowed_origins:
-                - http://k8s-oteldemo-497054d7c2-763859031.us-west-2.elb.amazonaws.com
+                - http://k8s-oteldemo-bbd9607320-1933917927.us-west-2.elb.amazonaws.com
             endpoint: ${MY_POD_IP}:4318
     exporters:
       otlp/honeycomb:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-dataset": all-the-metrics
-          "x-honeycomb-team": "FecmbNqfOaYqsELVH54OrD"
+          "x-honeycomb-team": ${HONEYCOMB_API_KEY}
       otlp/honeycomb-logs:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-dataset": all-the-logs
-          "x-honeycomb-team": "FecmbNqfOaYqsELVH54OrD"
-
+          "x-honeycomb-team":  ${HONEYCOMB_API_KEY}
     service:
       pipelines:
         traces:
           processors: [memory_limiter, batch]
           exporters: [otlp, logging, otlp/honeycomb, spanmetrics]
         metrics:
-          exporters: [otlp/honeycomb]
+          exporters: [otlp/honeycomb, prometheus]
         logs:
           exporters: [otlp/honeycomb-logs]
