@@ -1,0 +1,105 @@
+# Helm release: daemonset-opentelemetry-collector
+# Helm chart: open-telemetry/opentelemetry-collector
+mode: daemonset
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+image:
+  tag: "0.84.0"
+presets:
+  kubernetesAttributes:
+    enabled: true
+  kubeletMetrics:
+    enabled: true
+  logsCollection:
+    enabled: true
+extraEnvs:
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: honeycomb-api-key
+        key: api-key
+  - name: NODE_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+  metrics:
+    enabled: false
+config:
+  processors:
+    transform/kubeletstats:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+            - set(attributes["collector.receiver"], "kubeletstats")
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+    transform/other:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+      trace_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+      log_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector")
+  receivers:
+    jaeger: null
+    zipkin: null
+    kubeletstats:
+      endpoint: "https://${NODE_IP}:10250"
+      insecure_skip_verify: true
+  exporters:
+    otlp:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+
+    otlp/metrics:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+        x-honeycomb-dataset: service-metrics
+
+    otlp/logging:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+        x-honeycomb-dataset: service-logs
+
+  service:
+    telemetry:
+      logs:
+        level: "debug"
+    pipelines:
+      traces:
+        receivers: [otlp]
+        processors: [k8sattributes, transform/other, memory_limiter, batch]
+        exporters: [otlp]
+      metrics:
+        receivers: [prometheus, otlp]
+        processors: [k8sattributes, transform/other, memory_limiter, batch]
+        exporters: [otlp/metrics]
+      metrics/kubeletstats:
+        receivers: [kubeletstats]
+        processors: [k8sattributes, transform/kubeletstats, memory_limiter, batch]
+        exporters: [otlp/metrics]
+      logs:
+        receivers: [otlp, filelog]
+        processors: [k8sattributes, transform/other, memory_limiter, batch]
+        exporters: [otlp/logging]

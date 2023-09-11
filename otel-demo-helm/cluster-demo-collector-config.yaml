@@ -1,0 +1,87 @@
+# Helm release: cluster-opentelemetry-collector
+# Helm chart: open-telemetry/opentelemetry-collector
+mode: deployment
+replicaCount: 1
+image:
+  tag: "0.84.0"
+presets:
+  clusterMetrics:
+    enabled: true
+  kubernetesEvents:
+    enabled: true
+extraEnvs:
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: honeycomb-api-key
+        key: api-key
+  - name: CLUSTER_NAME
+    value: "pixie-lou" # I don't know how to ask it this, so hard-code it
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+  metrics:
+    enabled: false
+config:
+  processors:
+    transform/labelme:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.receiver"], "k8s_cluster")
+            - set(attributes["k8s.cluster.name"], ${CLUSTER_NAME})
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+            - set(attributes["collector.collector"], "cluster-demo-opentelemetry-collector")
+      trace_statements:
+        - context: resource
+          statements:
+            - set(attributes["k8s.cluster.name"], ${CLUSTER_NAME})
+            - set(attributes["collector.collector"], "cluster-demo-opentelemetry-collector")
+      log_statements:
+        - context: resource
+          statements:
+            - set(attributes["collector.receiver"], "k8sobjects")
+            - set(attributes["k8s.cluster.name"], ${CLUSTER_NAME})
+            - set(attributes["collector.collector"], "cluster-demo-opentelemetry-collector")
+  receivers:
+    jaeger: null
+    zipkin: null
+    prometheus: null
+  exporters:
+    otlp:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+
+    otlp/metrics:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+        x-honeycomb-dataset: service-metrics
+
+    otlp/logging:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_API_KEY}
+        x-honeycomb-dataset: service-logs
+
+  service:
+    telemetry:
+      logs:
+        level: "debug"
+    pipelines:
+      traces: null
+      metrics:
+        receivers: [k8s_cluster]
+        processors: [transform/labelme, memory_limiter, batch]
+        exporters: [otlp/metrics]
+      logs:
+        receivers: [k8sobjects]
+        processors: [transform/labelme, memory_limiter, batch]
+        exporters: [otlp/logging]
