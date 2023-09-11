@@ -23,6 +23,7 @@ Improve the traces:
 [ ] a real URL
 [ ] derived columns in hny so I can make something of the events
 [ ] get more resource events from the k8sobjects receiver
+[ ] can I add cluster name to all the events?
 
 Blog posts I could make out of this:
 - how to include a helm deployment in terraform. A negative of this: terraform can't tell you what it's gonna create.

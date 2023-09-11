@@ -64,6 +64,11 @@ config:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
         x-honeycomb-dataset: service-logs
 
+    otlphttp/outside:
+      endpoint: http://k8s-oteldemo-bbd9607320-1933917927.us-west-2.elb.amazonaws.com:80
+      tls:
+        insecure: true
+
   service:
     telemetry:
       logs:
@@ -73,7 +78,7 @@ config:
       metrics:
         receivers: [k8s_cluster]
         processors: [transform/labelme, memory_limiter, batch]
-        exporters: [otlp/metrics]
+        exporters: [otlp/metrics, otlphttp/outside]
       logs:
         receivers: [k8sobjects]
         processors: [transform/labelme, memory_limiter, batch]
