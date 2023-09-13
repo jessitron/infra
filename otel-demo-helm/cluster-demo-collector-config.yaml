@@ -35,19 +35,19 @@ config:
         - context: resource
           statements:
             - set(attributes["collector.receiver"], "k8s_cluster")
-            - set(attributes["k8s.cluster.name"], ${CLUSTER_NAME})
+            - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.collector"], "cluster-demo-opentelemetry-collector")
       trace_statements:
         - context: resource
           statements:
-            - set(attributes["k8s.cluster.name"], ${CLUSTER_NAME})
+            - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
             - set(attributes["collector.collector"], "cluster-demo-opentelemetry-collector")
       log_statements:
         - context: resource
           statements:
             - set(attributes["collector.receiver"], "k8sobjects")
-            - set(attributes["k8s.cluster.name"], ${CLUSTER_NAME})
+            - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
             - set(attributes["collector.collector"], "cluster-demo-opentelemetry-collector")
   receivers:
     jaeger: null

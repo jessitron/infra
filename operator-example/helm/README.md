@@ -70,3 +70,15 @@ helm upgrade service-opentelemetry-collector open-telemetry/opentelemetry-collec
 ```
 helm upgrade cluster-opentelemetry-collector open-telemetry/opentelemetry-collector --values cluster-collector-config.yaml
 ```
+
+# Iterating
+
+```
+./up whatever.yaml
+```
+
+is a script that runs helm upgrade for that values file. The files now contain comments that helps with releases.
+
+This also lets me take them all down:
+
+`grep release *.yaml | cut -d ':' -f 3 | xargs helm uninstall`

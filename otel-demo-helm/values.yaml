@@ -17,10 +17,12 @@ prometheus:
       enabled: false
     resources:
       limits:
-        memory: 600Mi
-
+        memory: 1200Mi
 
 opentelemetry-collector:
+  resources:
+    limits:
+      memory: 900Mi
   extraEnvs:
     - name: HONEYCOMB_API_KEY
       valueFrom:
@@ -55,7 +57,7 @@ opentelemetry-collector:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-dataset": all-the-logs
-          "x-honeycomb-team":  ${HONEYCOMB_API_KEY}
+          "x-honeycomb-team": ${HONEYCOMB_API_KEY}
     service:
       pipelines:
         traces:
