@@ -30,7 +30,7 @@ opentelemetry-collector:
           name: honeycomb-api-key
           key: api-key
   image:
-    tag: "0.75.0"
+    tag: "0.86.0"
   presets:
     kubernetesAttributes:
       enabled: true
