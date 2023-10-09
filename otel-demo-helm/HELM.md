@@ -98,7 +98,7 @@ https://github.com/open-telemetry/opentelemetry-helm-charts/blob/main/charts/ope
 
 To upgrade to the latest, if there aren't any changes:
 
-`helm upgrade sso-demo open-telemetry/opentelemetry-demo -f values.yaml`
+`helm upgrade otel-demo open-telemetry/opentelemetry-demo -f values.yaml`
 
 # Ingress
 
