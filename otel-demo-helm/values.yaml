@@ -62,8 +62,8 @@ opentelemetry-collector:
       pipelines:
         traces:
           processors: [memory_limiter, batch]
-          exporters: [otlp, logging, otlp/honeycomb, spanmetrics]
+          exporters: [otlp, otlp/honeycomb, spanmetrics]
         metrics:
-          exporters: [otlp/honeycomb, prometheus]
+          exporters: [otlp/honeycomb]
         logs:
           exporters: [otlp/honeycomb-logs]
