@@ -29,16 +29,38 @@ opentelemetry-collector:
         secretKeyRef:
           name: honeycomb-api-key
           key: api-key
+    - name: CLUSTER_NAME
+      value: "pixie-lou" # I don't know how to ask it this, so hard-code it
+    - name: COLLECTOR_NAME
+      value: "otel-demo-otelcol" # this will do
   image:
     tag: "0.86.0"
   presets:
     kubernetesAttributes:
       enabled: true
     clusterMetrics:
-      enabled: true
+      enabled: false
     kubernetesEvents:
-      enabled: true
+      enabled: false
   config:
+    processors:
+      transform/labelme:
+        metric_statements:
+          - context: resource
+            statements:
+              - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+              - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+              - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
+        trace_statements:
+          - context: resource
+            statements:
+              - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+              - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
+        log_statements:
+          - context: resource
+            statements:
+              - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+              - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
     receivers:
       otlp:
         protocols:
@@ -61,9 +83,11 @@ opentelemetry-collector:
     service:
       pipelines:
         traces:
-          processors: [memory_limiter, batch]
+          processors: [memory_limiter, transform/labelme, batch]
           exporters: [otlp, otlp/honeycomb, spanmetrics]
         metrics:
+          processors: [memory_limiter, filter/ottl, transform, resource, transform/labelme, batch]
           exporters: [otlp/honeycomb]
         logs:
+          processors: [memory_limiter, transform/labelme]
           exporters: [otlp/honeycomb-logs]
