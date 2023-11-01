@@ -211,26 +211,44 @@ Here's what I remember:
 - give that k8s user admin permissions. See `extras/sylvain-as-admin.yaml` -- copy that file, change the username, and `k apply -f`
 
 ### BeAHuman
+
 this is for creating keys
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "ManageOwnAccessKeys",
-            "Effect": "Allow",
-            "Action": [
-                "iam:CreateAccessKey",
-                "iam:DeleteAccessKey",
-                "iam:GetAccessKeyLastUsed",
-                "iam:GetUser",
-                "iam:ListAccessKeys",
-                "iam:UpdateAccessKey",
-                "iam:TagUser"
-            ],
-            "Resource": "arn:aws:iam::*:user/${aws:username}"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ManageOwnAccessKeys",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateAccessKey",
+        "iam:DeleteAccessKey",
+        "iam:GetAccessKeyLastUsed",
+        "iam:GetUser",
+        "iam:ListAccessKeys",
+        "iam:UpdateAccessKey",
+        "iam:TagUser"
+      ],
+      "Resource": "arn:aws:iam::*:user/${aws:username}"
+    }
+  ]
 }
 ```
+
+## Getting external DNS maybe
+
+https://repost.aws/knowledge-center/eks-set-up-externaldns
+
+`eksctl create iamserviceaccount --name service-account-for-dns --cluster pixie-lou --attach-policy-arn arn:aws:iam::414852377253:policy/DoThingsWithDNS --approve`
+
+I'm not gonna kubectl apply. I'll install it with helm.
+Someday that helm install should get into the terraform, but we'll start with this.
+
+https://github.com/kubernetes-sigs/external-dns/tree/master/charts/external-dns
+
+helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
+
+helm upgrade --install external-dns external-dns/external-dns --values external-dns-values.yaml
+
+OK. The only thing in the values was the service account that I had eksctl create.
