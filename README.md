@@ -252,3 +252,9 @@ helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm upgrade --install external-dns external-dns/external-dns --values external-dns-values.yaml
 
 OK. The only thing in the values was the service account that I had eksctl create.
+
+After externaldns is deployed, I added an annotation to ingress.yaml, and it worked!
+
+http://jessitron.honeydemo.io
+
+Now, how to make https work??
