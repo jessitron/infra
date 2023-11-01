@@ -74,13 +74,13 @@ config:
       endpoint: api.honeycomb.io:443
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
-        x-honeycomb-dataset: service-metrics
+        x-honeycomb-dataset: all-the-metrics
 
     otlp/logging:
       endpoint: api.honeycomb.io:443
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
-        x-honeycomb-dataset: service-logs
+        x-honeycomb-dataset: all-the-logs
 
   service:
     telemetry:
