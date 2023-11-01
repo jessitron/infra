@@ -194,3 +194,17 @@ and finally,
 `terraform init -migrate-state`
 
 to copy what feeble state I still have.
+
+## Adding a user
+
+When I want someone else to have admin access to my cluster, it's quite tricky.
+
+Here's what I remember:
+
+- Create an IAM user. (It should be possible to give permissions to another account)
+- Give them the EKSReadList group. I created this group, with permissions to clusters.
+- run the eksctl spell to map that IAM user to a k8s user
+
+`eksctl create iamidentitymapping --cluster pixie-lou --region=us-west-2 --arn arn:aws:iam::414852377253:user/martin --group system:masters --username martin`
+
+- give that k8s user admin permissions. See `extras/sylvain-as-admin.yaml` -- copy that file, change the username, and `k apply -f`

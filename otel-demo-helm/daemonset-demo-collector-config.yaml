@@ -3,10 +3,10 @@
 mode: daemonset
 resources:
   limits:
-    cpu: 1
-    memory: 1Gi
+    cpu: "0.5"
+    memory: 400Mi
 image:
-  tag: "0.84.0"
+  tag: "0.87.0"
 presets:
   kubernetesAttributes:
     enabled: true
