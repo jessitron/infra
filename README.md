@@ -255,6 +255,12 @@ OK. The only thing in the values was the service account that I had eksctl creat
 
 After externaldns is deployed, I added an annotation to ingress.yaml, and it worked!
 
-http://jessitron.honeydemo.io
+http://otel.jessitron.honeydemo.io
 
-Now, how to make https work??
+### For https://
+
+request a certificate in "certificate manager" in AWS, _in the same region as the cluster_
+
+and then add some annotations and values to the ingress.
+
+https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/guide/ingress/cert_discovery/
