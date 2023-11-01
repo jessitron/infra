@@ -9,7 +9,7 @@ resource "aws_eks_node_group" "main" {
   node_role_arn   = aws_iam_role.node.arn
 
   scaling_config {
-    desired_size = 3
+    desired_size = 4
     max_size     = 5
     min_size     = 3
   }
