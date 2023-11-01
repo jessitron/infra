@@ -11,6 +11,7 @@ metadata:
     app.kubernetes.io/part-of: opentelemetry-demo
     app.kubernetes.io/managed-by: Helm
   annotations:
+    external-dns.alpha.kubernetes.io/hostname: jessitron.honeydemo.io # give your domain name here
     alb.ingress.kubernetes.io/group.name: otel-demo
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
