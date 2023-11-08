@@ -10,6 +10,10 @@ variable "private_subnet_ids" {
   type = set(string)
 }
 
+output "PrivateSubnetIDs" {
+  value = var.private_subnet_ids[*]
+}
+
 variable "public_subnet_ids" {
   type = set(string)
 }

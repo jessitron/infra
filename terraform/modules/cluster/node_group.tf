@@ -15,6 +15,10 @@ resource "aws_eks_node_group" "main" {
   }
 
   subnet_ids = var.private_subnet_ids
+
+  tags = {
+    "eks:cluster-name" = var.cluster_name
+  }
 }
 
 resource "aws_iam_role" "node" {

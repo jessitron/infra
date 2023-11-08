@@ -86,3 +86,12 @@ provider "helm" {
 }
 
 
+output "dammit" {
+  value = "work dammit"
+}
+
+
+output "supposedly-subnet-ids" {
+  value = module.vpc.private_subnets
+}
+

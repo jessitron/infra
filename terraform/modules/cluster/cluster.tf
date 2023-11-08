@@ -22,6 +22,11 @@ resource "aws_eks_cluster" "main" {
     subnet_ids             = setunion(var.private_subnet_ids, var.public_subnet_ids)
     security_group_ids     = [aws_security_group.cluster.id]
   }
+
+  tags = {
+    "cluster-name" = var.cluster_name
+    "eks:cluster-name" = var.cluster_name
+  }
 }
 
 data "aws_eks_cluster_auth" "main" {
