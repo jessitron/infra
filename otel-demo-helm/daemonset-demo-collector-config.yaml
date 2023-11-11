@@ -6,13 +6,18 @@ resources:
     cpu: "0.5"
     memory: 400Mi
 image:
-  tag: "0.87.0"
+  repository: "tylerhelmuthhc/opentelemetry-collector-contrib"
+  tag: "latest" # expecting 2571d378e, the collector with the new k8sattributes. It should release in the world maybe next week
+command:
+  name: otelcontribcol
 presets:
   kubernetesAttributes:
     enabled: true
   kubeletMetrics:
     enabled: true
   logsCollection:
+    enabled: true
+  hostMetrics:
     enabled: true
 extraEnvs:
   - name: HONEYCOMB_API_KEY
@@ -37,6 +42,16 @@ ports:
     enabled: false
 config:
   processors:
+    k8sattributes:
+      extract:
+        labels:
+          - tag_name: $$1
+            key_regex: (.*)
+            from: node
+        annotations:
+          - tag_name: $$1
+            key_regex: (.*)
+            from: node
     transform/kubeletstats:
       metric_statements:
         - context: resource
@@ -92,7 +107,7 @@ config:
         processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp]
       metrics:
-        receivers: [prometheus, otlp]
+        receivers: [prometheus, otlp, hostmetrics]
         processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp/metrics]
       metrics/kubeletstats:
