@@ -147,3 +147,19 @@ kubectl create secret generic honeycomb-api-key --from-literal=api-key=$HONEYCOM
 ```
 
 and then added it as an env var to
+
+What is in the secret? This should output something without a newline, so it looks screwy with your prompt:
+
+```
+kubectl get secret honeycomb-api-key -o jsonpath='{.data.api-key}' | base64 --decode
+```
+
+Edit the secret:
+
+First, encode the new API key with
+
+`echo -n $HONEYCOMB_API_KEY | base64`
+
+Copy that output. Then,
+
+`kubectl edit secret honeycomb-api-key`

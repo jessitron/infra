@@ -34,7 +34,7 @@ opentelemetry-collector:
     - name: COLLECTOR_NAME
       value: "otel-demo-otelcol" # this will do
   image:
-    tag: "0.86.0"
+    tag: "0.88.0"
   presets:
     kubernetesAttributes:
       enabled: true
