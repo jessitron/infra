@@ -21,9 +21,11 @@ spec:
   ingressClassName: alb
   tls:
     - hosts:
-        - "*.jessitron.honeydemo.io"
+        - "otel.jessitron.honeydemo.io"
+        - "quiz.jessitron.honeydemo.io"
   rules:
-    - http:
+    - host: otel.jessitron.honeydemo.io
+      http:
         paths:
           - path: /v1/metrics
             pathType: Prefix
@@ -46,3 +48,27 @@ spec:
                 name: otel-demo-frontendproxy
                 port:
                   number: 8080
+    - host: quiz.jessitron.honeydemo.io
+      http:
+        paths:
+          - path: /v1/metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: quiz-otelcol
+                port:
+                  number: 4318
+          - path: /v1/traces
+            pathType: Prefix
+            backend:
+              service:
+                name: quiz-otelcol
+                port:
+                  number: 4318
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: quiz-booth-game-frontend
+                port:
+                  number: 80
