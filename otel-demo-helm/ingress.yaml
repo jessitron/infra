@@ -21,7 +21,7 @@ spec:
   ingressClassName: alb
   tls:
     - hosts:
-        - "*.jessitron.honeydemo.io"
+        - "otel.jessitron.honeydemo.io"
   rules:
     - http:
         paths:
