@@ -14,6 +14,8 @@ Keeping it separate makes it portable.
 
 Now i have to remember how to set up all the DNS stuff.
 
+`ingress.yaml` tries to set up a new ALB for this
+
 ## Components
 
 ### a pod to serve the js

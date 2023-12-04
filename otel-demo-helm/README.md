@@ -56,6 +56,26 @@ But here's what I did
 Really now that I'm defining the ingress rules myself, I could change that hostname to a star, and it
 would probably work. hmm.
 
+### how ingress works
+
+The 'ingress.yaml' file here defines a k8s ingress, which is a concept backed by nothing, until that alb ingress controller is installed.
+
+The alb ingress controller responds to the existence of the ingress by spinning up an ALB in AWS. That is visible in the AWS console, and not in k8s.
+
+Hit enter on the ingress in k9s and scroll to the bottom to look for error logs.
+
+If you change the bucket or prefix where the logs go, then you need to deal with terraform. To change the prefix, there's a permission to add to the alb role.
+
+Someday the automatically-provisioned DNS address of that ALB filters back to my ingress in k8s.
+
+Inside 'ingress.yaml' is an annotation that speaks to external-dns, which is a deployment in charge of updating Route53 in AWS. external-dns is supposed to notice the ingress and do stuff with Route53.
+
+Like anything in DNS, all of this seems to take FOREVER. Like, give it an hour :anger:
+
+Changing rules on the ingress is fast enough, if you alter the rules and then apply the yaml. Don't delete the ingress! That starts the slow part over again.
+
+I'm also not clear on where certificates come from.
+
 ## stuff about helm
 
 #### version of helm

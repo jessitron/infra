@@ -22,7 +22,7 @@ spec:
     - hosts:
         - "quiz.jessitron.honeydemo.io"
   rules:
-    - http: 
+    - http:
         paths:
           - path: /v1/metrics
             pathType: Prefix
