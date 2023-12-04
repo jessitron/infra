@@ -1,48 +1,47 @@
 apiVersion: "networking.k8s.io/v1"
 kind: Ingress
 metadata:
-  name: otel-demo-ingress
+  namespace: quiz
+  name: quiz-booth-game-ingress
   labels:
-    helm.sh/chart: opentelemetry-demo-0.16.0
-    app.kubernetes.io/name: otel-demo
-    app.kubernetes.io/instance: otel-demo
-    app.kubernetes.io/component: frontendproxy-ingress
+    app.kubernetes.io/name: quiz-booth-game-ingress
+    app.kubernetes.io/component: quiz-booth-game-ingress
     app.kubernetes.io/version: "1.2.1"
-    app.kubernetes.io/part-of: opentelemetry-demo
+    app.kubernetes.io/part-of: quiz-booth-game
     app.kubernetes.io/managed-by: Helm
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: otel.jessitron.honeydemo.io # give your domain name here
-    alb.ingress.kubernetes.io/group.name: otel-demo
+    external-dns.alpha.kubernetes.io/hostname: quiz.jessitron.honeydemo.io # give your domain name here
+    alb.ingress.kubernetes.io/group.name: quiz-booth-game
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443},{"HTTP":80}]'
-    alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=otel-demo-alb-access-logs,access_logs.s3.prefix=sso-demo-alb
+    alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=otel-demo-alb-access-logs,access_logs.s3.prefix=quiz-booth-game-alb
 spec:
   ingressClassName: alb
   tls:
     - hosts:
-        - "*.jessitron.honeydemo.io"
+        - "quiz.jessitron.honeydemo.io"
   rules:
-    - http:
+    - http: 
         paths:
           - path: /v1/metrics
             pathType: Prefix
             backend:
               service:
-                name: otel-demo-otelcol
+                name: quiz-otelcol
                 port:
                   number: 4318
           - path: /v1/traces
             pathType: Prefix
             backend:
               service:
-                name: otel-demo-otelcol
+                name: quiz-otelcol
                 port:
                   number: 4318
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: otel-demo-frontendproxy
+                name: quiz-booth-game-frontend
                 port:
-                  number: 8080
+                  number: 80
