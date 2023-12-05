@@ -1,93 +1,89 @@
-# Helm release: otel-demo
-# Helm chart: open-telemetry/opentelemetry-demo
-components:
-  frontend:
+# Helm release: quiz-otelcol
+# Helm chart: open-telemetry/opentelemetry-collector
+
+nameOverride: quiz-otelcol
+mode: deployment
+namespaceOverride: quiz
+
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+
+resources:
+  limits:
+    memory: 900Mi
+
+extraEnvs:
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: honeycomb-api-key-for-quiz
+        key: api-key
+  - name: CLUSTER_NAME
+    value: "pixie-lou" # I don't know how to ask it this, so hard-code it
+  - name: COLLECTOR_NAME
+    value: "quiz-otelcol" # this will do
+image:
+  tag: "0.90.1"
+presets:
+  kubernetesAttributes:
     enabled: true
-    envOverrides:
-      - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-        value: "/v1/traces"
-
-prometheus:
-  server:
-    global:
-      scrape_interval: 10s
-      scrape_timeout: 3s
-      evaluation_interval: 30s
-    persistentVolume:
-      enabled: false
-    resources:
-      limits:
-        memory: 1200Mi
-
-opentelemetry-collector:
-  resources:
-    limits:
-      memory: 900Mi
-  extraEnvs:
-    - name: HONEYCOMB_API_KEY
-      valueFrom:
-        secretKeyRef:
-          name: honeycomb-api-key
-          key: api-key
-    - name: CLUSTER_NAME
-      value: "pixie-lou" # I don't know how to ask it this, so hard-code it
-    - name: COLLECTOR_NAME
-      value: "otel-demo-otelcol" # this will do
-  image:
-    tag: "0.88.0"
-  presets:
-    kubernetesAttributes:
-      enabled: true
-    clusterMetrics:
-      enabled: false
-    kubernetesEvents:
-      enabled: false
-  config:
-    processors:
-      transform/labelme:
-        metric_statements:
-          - context: resource
-            statements:
-              - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
-              - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
-              - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
-        trace_statements:
-          - context: resource
-            statements:
-              - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
-              - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
-        log_statements:
-          - context: resource
-            statements:
-              - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
-              - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
-    receivers:
-      otlp:
-        protocols:
-          http:
-            cors:
-              allowed_origins:
-                - http://k8s-oteldemo-bbd9607320-1933917927.us-west-2.elb.amazonaws.com
-            endpoint: ${MY_POD_IP}:4318
-    exporters:
-      otlp/honeycomb:
-        endpoint: "api.honeycomb.io:443"
-        headers:
-          "x-honeycomb-dataset": all-the-metrics
-          "x-honeycomb-team": ${HONEYCOMB_API_KEY}
-      otlp/honeycomb-logs:
-        endpoint: "api.honeycomb.io:443"
-        headers:
-          "x-honeycomb-dataset": all-the-logs
-          "x-honeycomb-team": ${HONEYCOMB_API_KEY}
-    service:
-      pipelines:
-        traces:
-          processors: [memory_limiter, transform/labelme, batch]
-          exporters: [otlp, otlp/honeycomb, spanmetrics]
-        metrics:
-          processors: [memory_limiter, filter/ottl, transform, resource, transform/labelme, batch]
-          exporters: [otlp/honeycomb]
-        logs:
-          processors: [memory_limiter, transform/labelme]
-          exporters: [otlp/honeycomb-logs]
+  clusterMetrics:
+    enabled: false
+  kubernetesEvents:
+    enabled: false
+config:
+  processors:
+    transform/labelme:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+            - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
+      trace_statements:
+        - context: resource
+          statements:
+            - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+            - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
+      log_statements:
+        - context: resource
+          statements:
+            - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+            - set(attributes["collector.collector"], "${COLLECTOR_NAME}")
+  receivers:
+    otlp:
+      protocols:
+        http:
+          cors:
+            allowed_origins:
+              - "*"
+          endpoint: ${MY_POD_IP}:4318
+  exporters:
+    otlp/honeycomb:
+      endpoint: "api.honeycomb.io:443"
+      headers:
+        "x-honeycomb-dataset": all-the-metrics
+        "x-honeycomb-team": ${HONEYCOMB_API_KEY}
+    otlp/honeycomb-logs:
+      endpoint: "api.honeycomb.io:443"
+      headers:
+        "x-honeycomb-dataset": all-the-logs
+        "x-honeycomb-team": ${HONEYCOMB_API_KEY}
+  service:
+    pipelines:
+      traces:
+        processors: [memory_limiter, transform/labelme, batch]
+        exporters: [otlp/honeycomb]
+      metrics:
+        processors: [memory_limiter, transform/labelme, batch]
+        exporters: [otlp/honeycomb]
+      logs:
+        processors: [memory_limiter, transform/labelme]
+        exporters: [otlp/honeycomb-logs]
