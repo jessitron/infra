@@ -77,10 +77,13 @@ config:
         "x-honeycomb-dataset": all-the-logs
         "x-honeycomb-team": ${HONEYCOMB_API_KEY}
   service:
+    telemetry:
+      logs:
+        level: "debug"
     pipelines:
       traces:
         processors: [memory_limiter, transform/labelme, batch]
-        exporters: [otlp/honeycomb]
+        exporters: [otlp/honeycomb, debug]
       metrics:
         processors: [memory_limiter, transform/labelme, batch]
         exporters: [otlp/honeycomb]
