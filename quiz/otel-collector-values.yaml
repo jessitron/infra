@@ -69,7 +69,7 @@ config:
     otlp/honeycomb:
       endpoint: "api.honeycomb.io:443"
       headers:
-        "x-honeycomb-team": "poop"
+        "x-honeycomb-team": ${HONEYCOMB_API_KEY}
     otlp/honeycomb-metrics:
       endpoint: "api.honeycomb.io:443"
       headers:

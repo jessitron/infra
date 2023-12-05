@@ -24,7 +24,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /v1/metrics
+          - path: /v1/metrics 
             pathType: Prefix
             backend:
               service:
