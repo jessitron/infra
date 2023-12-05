@@ -69,6 +69,10 @@ config:
     otlp/honeycomb:
       endpoint: "api.honeycomb.io:443"
       headers:
+        "x-honeycomb-team": "poop"
+    otlp/honeycomb-metrics:
+      endpoint: "api.honeycomb.io:443"
+      headers:
         "x-honeycomb-dataset": all-the-metrics
         "x-honeycomb-team": ${HONEYCOMB_API_KEY}
     otlp/honeycomb-logs:
@@ -86,7 +90,7 @@ config:
         exporters: [otlp/honeycomb, debug]
       metrics:
         processors: [memory_limiter, transform/labelme, batch]
-        exporters: [otlp/honeycomb]
+        exporters: [otlp/honeycomb-metrics]
       logs:
         processors: [memory_limiter, transform/labelme]
         exporters: [otlp/honeycomb-logs]
