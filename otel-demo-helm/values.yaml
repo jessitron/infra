@@ -34,7 +34,7 @@ opentelemetry-collector:
     - name: COLLECTOR_NAME
       value: "otel-demo-otelcol" # this will do
   image:
-    tag: "0.88.0"
+    tag: "0.95.0"
   presets:
     kubernetesAttributes:
       enabled: true
@@ -86,8 +86,8 @@ opentelemetry-collector:
           processors: [memory_limiter, transform/labelme, batch]
           exporters: [otlp, otlp/honeycomb, spanmetrics]
         metrics:
-          processors: [memory_limiter, filter/ottl, transform, resource, transform/labelme, batch]
+          processors: [memory_limiter, resource, transform/labelme, batch]
           exporters: [otlp/honeycomb]
         logs:
-          processors: [memory_limiter, transform/labelme]
+          processors: [memory_limiter, transform/labelme, batch]
           exporters: [otlp/honeycomb-logs]

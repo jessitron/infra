@@ -1,6 +1,6 @@
 #!/bin/bash
 
-filename=$1
+filename=$1 # what is bash for argv.shift ?
 if [[ -z $1 ]]; then
   echo "Usage: $0 <values.yaml>"
   exit 1
