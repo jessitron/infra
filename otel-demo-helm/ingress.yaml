@@ -17,13 +17,15 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443},{"HTTP":80}]'
     alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=otel-demo-alb-access-logs,access_logs.s3.prefix=sso-demo-alb
+    alb.ingress.kubernetes.io/group.name: "only-one-alb-please"
 spec:
   ingressClassName: alb
   tls:
     - hosts:
         - "otel.jessitron.honeydemo.io"
   rules:
-    - http:
+    - host: "otel.jessitron.honeydemo.io"
+      http:
         paths:
           - path: /v1/metrics
             pathType: Prefix
