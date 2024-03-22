@@ -17,7 +17,7 @@ But now the cluster has been created here with the state in s3, whew. Bucket jes
 
 # Minimal demo: AWS EKS with ALB
 
-- Uses the default backend configuration (local file named `terraform.tfstate` -- **this has been `.gitignore`-d!**).
+- Uses the default backend configuration
 - AWS authentication requires additional configuration, such as selecting a CLI profile. For more, see https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration.
 - This repository can build a minimal EKS cluster with an ALB, and omits as much detail as possible. **It does not demonstrate security, best practice, nor least privilege -- be mindful of your observability, public access, and IAM policies!**
 - Requires Terraform 1.3 or above.

@@ -47,8 +47,6 @@ module "vpc" {
 
   enable_nat_gateway = true
 
-  // Tags from: https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
-
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
   }
