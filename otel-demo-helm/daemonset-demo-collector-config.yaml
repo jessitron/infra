@@ -6,7 +6,8 @@ resources:
     cpu: "0.5"
     memory: 400Mi
 image:
-  tag: "0.87.0"
+  tag: "0.102.1"
+  repository: "otel/opentelemetry-collector-k8s"
 presets:
   kubernetesAttributes:
     enabled: true
@@ -43,21 +44,21 @@ config:
           statements:
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.receiver"], "kubeletstats")
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"] == nil
+            - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
     transform/other:
       metric_statements:
         - context: resource
           statements:
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"] == nil
+            - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
       trace_statements:
         - context: resource
           statements:
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"] == nil
+            - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
       log_statements:
         - context: resource
           statements:
-            - set(attributes["collector.collector"], "daemonset-demo-opentelemetry-collector") where attributes["collector.collector"] == nil
+            - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
   receivers:
     jaeger: null
     zipkin: null
