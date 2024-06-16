@@ -25,6 +25,12 @@ extraEnvs:
     valueFrom:
       fieldRef:
         fieldPath: status.hostIP
+extraEnvs:
+  - name: HONEYCOMB_O11YDAY_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: honeycomb-o11yday-api-key
+        key: api-key
 ports:
   jaeger-compact:
     enabled: false
@@ -38,6 +44,11 @@ ports:
     enabled: false
 config:
   processors:
+    filter/only-o11yday-namespace:
+      error_mode: ignore
+      logs:
+        log_record:
+          - resource.attributes[]"k8s.namespace.name"] != "o11yday"
     transform/kubeletstats:
       metric_statements:
         - context: resource
@@ -82,6 +93,12 @@ config:
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
         x-honeycomb-dataset: all-the-logs
+    
+    otlp/hny-o11yday:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_O11YDAY_API_KEY}
+        x-honeycomb-dataset: scraped-logs
 
   service:
     telemetry:
@@ -104,3 +121,7 @@ config:
         receivers: [otlp, filelog]
         processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp/logging]
+      logs/o11yday:
+        receivers: [filelog]
+        processors: [k8sattributes, filter/only-o11yday-namespace, transform/other, memory_limiter, batch]
+        exporters: [otlp/hny-o11yday]
