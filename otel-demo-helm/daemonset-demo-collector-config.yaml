@@ -48,7 +48,7 @@ config:
       error_mode: ignore
       logs:
         log_record:
-          - resource.attributes[]"k8s.namespace.name"] != "o11yday"
+          - resource.attributes["k8s.namespace.name"] != "o11yday"
     transform/kubeletstats:
       metric_statements:
         - context: resource
