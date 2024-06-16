@@ -25,7 +25,6 @@ extraEnvs:
     valueFrom:
       fieldRef:
         fieldPath: status.hostIP
-extraEnvs:
   - name: HONEYCOMB_O11YDAY_API_KEY
     valueFrom:
       secretKeyRef:
