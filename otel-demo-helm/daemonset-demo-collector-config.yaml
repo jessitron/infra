@@ -98,7 +98,12 @@ config:
       headers:
         x-honeycomb-team: ${HONEYCOMB_O11YDAY_API_KEY}
         x-honeycomb-dataset: scraped-logs
-    
+    opensearch:
+      http:
+        endpoint: http://otel-demo-opensearch:9200
+        tls:
+          insecure: true
+      logs_index: otel
     opensearch/o11yday:
       dataset: logs
       namespace: o11y-day
