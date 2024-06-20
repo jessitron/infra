@@ -7,7 +7,7 @@ resources:
     memory: 400Mi
 image:
   tag: "0.102.1"
-  repository: "otel/opentelemetry-collector-k8s"
+  repository: "otel/opentelemetry-collector-contrib"
 presets:
   kubernetesAttributes:
     enabled: true
@@ -98,6 +98,15 @@ config:
       headers:
         x-honeycomb-team: ${HONEYCOMB_O11YDAY_API_KEY}
         x-honeycomb-dataset: scraped-logs
+    
+    opensearch/o11yday:
+      dataset: logs
+      namespace: o11y-day
+      http:
+        endpoint: http://otel-demo-opensearch:9200
+        tls:
+          insecure: true
+      logs_index: o11yday
 
   service:
     telemetry:
@@ -119,8 +128,8 @@ config:
       logs:
         receivers: [otlp, filelog]
         processors: [k8sattributes, transform/other, memory_limiter, batch]
-        exporters: [otlp/logging]
+        exporters: [otlp/logging, opensearch]
       logs/o11yday:
         receivers: [filelog]
         processors: [k8sattributes, filter/only-o11yday-namespace, transform/other, memory_limiter, batch]
-        exporters: [otlp/hny-o11yday]
+        exporters: [otlp/hny-o11yday, opensearch/o11yday]
