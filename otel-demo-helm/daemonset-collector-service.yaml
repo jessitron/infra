@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: daemonset-otelcol
+  namespace: default
+spec:
+  selector:
+    app.kubernetes.io/instance: daemonset-opentelemetry-collector
+  ports:
+    - protocol: TCP
+      port: 4318  # Service port
+      targetPort: 4318  # Port on which your DaemonSet pods are listening
+  type: ClusterIP
