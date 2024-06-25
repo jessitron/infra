@@ -76,11 +76,14 @@ config:
       endpoint: "https://${NODE_IP}:10250"
       insecure_skip_verify: true
   exporters:
+    otlp/jaeger:
+      endpoint: 'otel-demo-jaeger-collector:4317'
+      tls:
+        insecure: true
     otlp:
       endpoint: api.honeycomb.io:443
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
-
     otlp/metrics:
       endpoint: api.honeycomb.io:443
       headers:
@@ -134,6 +137,10 @@ config:
         receivers: [otlp, filelog]
         processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp/logging, opensearch]
+      traces/o11yday:
+        receivers: [otlp]
+        processors: [k8sattributes, filter/only-o11yday-namespace, transform/other, memory_limiter, batch]
+        exporters: [otlp/hny-o11yday, otlp/jaeger]
       logs/o11yday:
         receivers: [filelog]
         processors: [k8sattributes, filter/only-o11yday-namespace, transform/other, memory_limiter, batch]
