@@ -48,6 +48,12 @@ config:
       logs:
         log_record:
           - resource.attributes["k8s.namespace.name"] != "o11yday"
+      traces:
+        span:
+          - resource.attributes["k8s.namespace.name"] != "o11yday"
+      metrics:
+        metric:
+          - resource.attributes["k8s.namespace.name"] != "o11yday"
     transform/kubeletstats:
       metric_statements:
         - context: resource
@@ -89,6 +95,11 @@ config:
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
         x-honeycomb-dataset: all-the-metrics
+    otlp/metrics-o11yday:
+      endpoint: api.honeycomb.io:443
+      headers:
+        x-honeycomb-team: ${HONEYCOMB_O11YDAY_API_KEY}
+        x-honeycomb-dataset: k8s-metrics
 
     otlp/logging:
       endpoint: api.honeycomb.io:443
@@ -133,6 +144,10 @@ config:
         receivers: [kubeletstats]
         processors: [k8sattributes, transform/kubeletstats, memory_limiter, batch]
         exporters: [otlp/metrics]
+      metrics/kubeletstats-o11yday:
+        receivers: [kubeletstats]
+        processors: [k8sattributes, filter/only-o11yday-namespace, transform/kubeletstats, memory_limiter, batch]
+        exporters: [otlp/metrics-o11yday]
       logs:
         receivers: [otlp, filelog]
         processors: [k8sattributes, transform/other, memory_limiter, batch]
