@@ -48,9 +48,6 @@ config:
       logs:
         log_record:
           - resource.attributes["k8s.namespace.name"] != "o11yday"
-      traces:
-        span:
-          - resource.attributes["k8s.namespace.name"] != "o11yday"
       metrics:
         metric:
           - resource.attributes["k8s.namespace.name"] != "o11yday"
