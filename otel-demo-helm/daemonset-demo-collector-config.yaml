@@ -73,7 +73,7 @@ config:
           statements:
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
-            - set(attributes["collector.receiver"], "kubeletstats")
+            - set(attributes["collector.receiver"], "prometheus, otlp")
             - set(attributes["collector.pipeline"], "metrics") where attributes["collector.pipeline"] == nil
     transform/other:
       metric_statements:
@@ -97,7 +97,7 @@ config:
       insecure_skip_verify: true
   exporters:
     otlp/jaeger:
-      endpoint: 'otel-demo-jaeger-collector:4317'
+      endpoint: "otel-demo-jaeger-collector:4317"
       tls:
         insecure: true
     otlp:
@@ -120,7 +120,7 @@ config:
       headers:
         x-honeycomb-team: ${HONEYCOMB_API_KEY}
         x-honeycomb-dataset: all-the-logs
-    
+
     otlp/hny-o11yday:
       endpoint: api.honeycomb.io:443
       headers:
@@ -152,15 +152,24 @@ config:
         exporters: [otlp]
       metrics:
         receivers: [prometheus, otlp]
-        processors: [k8sattributes, transform/other, memory_limiter, batch]
+        processors:
+          [k8sattributes, transform/metrics-other, memory_limiter, batch]
         exporters: [otlp/metrics]
       metrics/kubeletstats:
         receivers: [kubeletstats]
-        processors: [k8sattributes, transform/kubeletstats, memory_limiter, batch]
+        processors:
+          [k8sattributes, transform/kubeletstats, memory_limiter, batch]
         exporters: [otlp/metrics]
       metrics/kubeletstats-o11yday:
         receivers: [kubeletstats]
-        processors: [k8sattributes, filter/only-o11yday-namespace, transform/kubeletstats, memory_limiter, batch]
+        processors:
+          [
+            k8sattributes,
+            filter/only-o11yday-namespace,
+            transform/kubeletstats-o11yday,
+            memory_limiter,
+            batch,
+          ]
         exporters: [otlp/metrics-o11yday]
       logs:
         receivers: [otlp, filelog]
@@ -168,9 +177,23 @@ config:
         exporters: [otlp/logging, opensearch]
       traces/o11yday:
         receivers: [otlp]
-        processors: [k8sattributes, filter/only-o11yday-namespace, transform/other, memory_limiter, batch]
+        processors:
+          [
+            k8sattributes,
+            filter/only-o11yday-namespace,
+            transform/other,
+            memory_limiter,
+            batch,
+          ]
         exporters: [otlp/hny-o11yday, otlp/jaeger]
       logs/o11yday:
         receivers: [filelog]
-        processors: [k8sattributes, filter/only-o11yday-namespace, transform/other, memory_limiter, batch]
+        processors:
+          [
+            k8sattributes,
+            filter/only-o11yday-namespace,
+            transform/other,
+            memory_limiter,
+            batch,
+          ]
         exporters: [otlp/hny-o11yday, opensearch/o11yday]
