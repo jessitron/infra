@@ -67,14 +67,22 @@ config:
             - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
             - set(attributes["collector.receiver"], "kubeletstats")
             - set(attributes["collector.pipeline"], "metrics/kubeletstats-o11yday") where attributes["collector.pipeline"] == nil
-    transform/metrics-other:
+    transform/metrics-prometheus:
       metric_statements:
         - context: resource
           statements:
             - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
             - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
-            - set(attributes["collector.receiver"], "prometheus, otlp")
-            - set(attributes["collector.pipeline"], "metrics") where attributes["collector.pipeline"] == nil
+            - set(attributes["collector.receiver"], "prometheus")
+            - set(attributes["collector.pipeline"], "metrics/prometheus") where attributes["collector.pipeline"] == nil
+    transform/metrics-otlp:
+      metric_statements:
+        - context: resource
+          statements:
+            - set(attributes["meta.signal_type"], "metrics") where attributes["meta.signal_type"] == nil
+            - set(attributes["collector.collector"], "daemonset-demo-k8s") where attributes["collector.collector"] == nil
+            - set(attributes["collector.receiver"], "otlp")
+            - set(attributes["collector.pipeline"], "metrics/otlp") where attributes["collector.pipeline"] == nil
     transform/other:
       metric_statements:
         - context: resource
@@ -150,10 +158,15 @@ config:
         receivers: [otlp]
         processors: [k8sattributes, transform/other, memory_limiter, batch]
         exporters: [otlp]
-      metrics:
-        receivers: [prometheus, otlp]
+      metrics/prometheus:
+        receivers: [prometheus]
         processors:
-          [k8sattributes, transform/metrics-other, memory_limiter, batch]
+          [k8sattributes, transform/metrics-prometheus, memory_limiter, batch]
+        exporters: [otlp/metrics]
+      metrics/otlp:
+        receivers: [otlp]
+        processors:
+          [k8sattributes, transform/metrics-otlp, memory_limiter, batch]
         exporters: [otlp/metrics]
       metrics/kubeletstats:
         receivers: [kubeletstats]
